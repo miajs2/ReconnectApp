@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.addContact);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //
+                startActivity(new Intent(MainActivity.this, AddContact.class));
             }
         });
 
