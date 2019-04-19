@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Reconnect</string>
+    <string name="add_contact">Add Contact</string>
+    <string name="search">Find Contact</string>
 </resources>
