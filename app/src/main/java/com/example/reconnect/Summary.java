@@ -3,9 +3,11 @@ package com.example.reconnect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,13 @@ public class Summary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary2);
 
+        // Get dropdown from XML
+        Spinner dropdownHistory = findViewById(R.id.history);
+        String[] durations = new String[]{"One Week", "One Month", "One Year"};
+        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, durations);
+        dropdownHistory.setAdapter(historyAdapter);
+
+        // temporary list of contacts
         List<HashMap<String, String>> aList = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
