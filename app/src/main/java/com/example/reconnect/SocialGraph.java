@@ -31,8 +31,8 @@ public class SocialGraph extends View {
 
     private final Paint p;
     private final Path path;
-    private final List<Point> points;
-    private final Point selfPoint;
+//    private final List<Point> points;
+//    private final Point selfPoint;
     private final Point point1;
     private final Point point2;
     private final Point point3;
@@ -46,20 +46,20 @@ public class SocialGraph extends View {
 
         List<HashMap<String, String>> aList = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
-            HashMap<String, String> hm = new HashMap<>();
-            hm.put("name", names[i]);
-            hm.put("last_connected", lastConnected[i]);
-            hm.put("avatars", Integer.toString(avatars[i]));
-            aList.add(hm);
-        }
-
-        points = new ArrayList<>();
-
-        for (int i = 0; i < aList.size(); i++) {
-            points.add(new Point(0,0));
-        }
-        selfPoint = new Point();
+//        for (int i = 0; i < 4; i++) {
+//            HashMap<String, String> hm = new HashMap<>();
+//            hm.put("name", names[i]);
+//            hm.put("last_connected", lastConnected[i]);
+//            hm.put("avatars", Integer.toString(avatars[i]));
+//            aList.add(hm);
+//        }
+//
+//        points = new ArrayList<>();
+//
+//        for (int i = 0; i < aList.size(); i++) {
+//            points.add(new Point(0,0));
+//        }
+//        selfPoint = new Point();
         point1 = new Point(200, 300);
         point2 = new Point(700, 800);
         point3 = new Point(200, 800);
