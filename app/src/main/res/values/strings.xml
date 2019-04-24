@@ -10,4 +10,33 @@
     <string name="contact_photo">Upload Contact Picture:</string>
     <string name="contact">Contacts</string>
     <string name="summary_string">You reconnected with...</string>
+    <string name="full_name">First Name, Last Name</string>
+    <string name="add_interaction">Add New Interaction</string>
+    <string name="interaction_type">Type of interaction</string>
+    <string name="interaction_duration">Duration</string>
+    <string name="interaction_notes">Notes</string>
+    <string-array name="interactions_array">
+        <item>Phone call</item>
+        <item>Online chat</item>
+        <item>Face to face</item>
+    </string-array>
+    <string name="interaction_date">Date of interaction</string>
+    <string-array name="months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+    </string-array>
+    <string-array name="days">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>24</item>
+    </string-array>
+    <string-array name="years">
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+    </string-array>
+
+
 </resources>

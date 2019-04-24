@@ -52,3 +52,5 @@
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
+
+<!--TODO: Programmatically add views to this page. One picture, and one text box containing info about one interaction.-->
