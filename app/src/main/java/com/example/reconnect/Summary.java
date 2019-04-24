@@ -26,7 +26,11 @@ public class Summary extends AppCompatActivity {
     };
 
     String[] lastConnected = new String[]{
-            "Last Connected: 3 weeks ago", "Last Connected: 5 months ago", "Last Connected: 2 days ago", "Last Connected: 7 weeks ago",
+            "3 weeks ago", "5 months ago", "2 days ago", "7 weeks ago",
+    };
+
+    int[] modes = new int[]{
+            R.drawable.phone_icon, R.drawable.message_icon, R.drawable.face_to_face_icon, R.drawable.phone_icon,
     };
 
     @Override
@@ -48,13 +52,14 @@ public class Summary extends AppCompatActivity {
             hm.put("name", names[i]);
             hm.put("last_connected", lastConnected[i]);
             hm.put("avatars", Integer.toString(avatars[i]));
+            hm.put("mode", Integer.toString(modes[i]));
             aList.add(hm);
         }
 
-        String[] from = {"name", "last_connected", "avatars"};
-        int[] to = {R.id.name, R.id.last_connected, R.id.avatar};
+        String[] from = {"name", "last_connected", "avatars", "mode"};
+        int[] to = {R.id.name, R.id.last_connected, R.id.avatar, R.id.mode};
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.contact_home_screen, from, to);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.interaction_template_summary, from, to);
         ListView androidListView = (ListView) findViewById(R.id.summary_list);
         androidListView.setAdapter(simpleAdapter);
     }
