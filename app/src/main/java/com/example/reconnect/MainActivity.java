@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
         ListView androidListView = (ListView) findViewById(R.id.list_view);
         androidListView.setAdapter(simpleAdapter);
 
-        helper = new ReconnectDBHelper(this);
-        db =  helper.getWritableDatabase();
+//        helper = new ReconnectDBHelper(this);
+//        db =  helper.getWritableDatabase();
     }
 
     /**
