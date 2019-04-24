@@ -140,19 +140,19 @@ public class SocialGraph extends View {
         canvas.drawPath(path, p);
 
         Bitmap bm =
-                BitmapFactory.decodeResource(getResources(), R.drawable.alex);
+                BitmapFactory.decodeResource(getResources(), R.drawable.sarah);
         Bitmap rect_avatar1 = Bitmap.createScaledBitmap(bm, 200, 200, false);
         Bitmap avatar1 = getCroppedBitmap(rect_avatar1);
 
-        Bitmap bm2 = BitmapFactory.decodeResource(getResources(),R.drawable.john);
+        Bitmap bm2 = BitmapFactory.decodeResource(getResources(),R.drawable.mary);
         Bitmap rect_avatar2 = Bitmap.createScaledBitmap(bm2, 200, 200, false);
         Bitmap avatar2 = getCroppedBitmap(rect_avatar2);
 
-        Bitmap bm3 = BitmapFactory.decodeResource(getResources(),R.drawable.mary);
+        Bitmap bm3 = BitmapFactory.decodeResource(getResources(),R.drawable.alex);
         Bitmap rect_avatar3 = Bitmap.createScaledBitmap(bm3, 200, 200, false);
         Bitmap avatar3 = getCroppedBitmap(rect_avatar3);
 
-        Bitmap bm4 = BitmapFactory.decodeResource(getResources(),R.drawable.sarah);
+        Bitmap bm4 = BitmapFactory.decodeResource(getResources(),R.drawable.john);
         Bitmap rect_avatar4 = Bitmap.createScaledBitmap(bm4, 200, 200, false);
         Bitmap avatar4 = getCroppedBitmap(rect_avatar4);
 

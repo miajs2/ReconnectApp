@@ -27,7 +27,7 @@ public class Summary extends AppCompatActivity {
     };
 
     String[] lastConnected = new String[]{
-            "2 days ago", "5 days ago", "2 weeks ago", "3 weeks ago",
+            "2 days ago", "5 days ago", "1 week ago", "3 weeks ago",
     };
 
     int[] modes = new int[]{
