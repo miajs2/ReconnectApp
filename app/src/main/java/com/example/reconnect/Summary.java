@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,15 +23,19 @@ public class Summary extends AppCompatActivity {
 
 
     int[] avatars = new int[]{
-            R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar,
+            R.drawable.alex, R.drawable.john, R.drawable.mary, R.drawable.sarah,
     };
 
     String[] lastConnected = new String[]{
-            "3 weeks ago", "5 months ago", "2 days ago", "7 weeks ago",
+            "2 days ago", "5 days ago", "2 weeks ago", "3 weeks ago",
     };
 
     int[] modes = new int[]{
             R.drawable.phone_icon, R.drawable.message_icon, R.drawable.face_to_face_icon, R.drawable.phone_icon,
+    };
+
+    String[] durations = new String[]{
+            "1h", "15m", "2h", "30m",
     };
 
     @Override
@@ -38,10 +43,13 @@ public class Summary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary2);
 
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Get dropdown from XML
         Spinner dropdownHistory = findViewById(R.id.history);
-        String[] durations = new String[]{"One Week", "One Month", "One Year"};
-        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, durations);
+        String[] histories = new String[]{"One Week", "One Month", "One Year"};
+        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
         dropdownHistory.setAdapter(historyAdapter);
 
         // temporary list of contacts
@@ -53,14 +61,21 @@ public class Summary extends AppCompatActivity {
             hm.put("last_connected", lastConnected[i]);
             hm.put("avatars", Integer.toString(avatars[i]));
             hm.put("mode", Integer.toString(modes[i]));
+            hm.put("duration", durations[i]);
             aList.add(hm);
         }
 
-        String[] from = {"name", "last_connected", "avatars", "mode"};
-        int[] to = {R.id.name, R.id.last_connected, R.id.avatar, R.id.mode};
+        String[] from = {"name", "last_connected", "avatars", "mode", "duration"};
+        int[] to = {R.id.name, R.id.last_connected, R.id.avatar, R.id.mode, R.id.duration};
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.interaction_template_summary, from, to);
         ListView androidListView = (ListView) findViewById(R.id.summary_list);
         androidListView.setAdapter(simpleAdapter);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

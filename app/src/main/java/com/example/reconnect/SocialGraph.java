@@ -36,6 +36,8 @@ public class SocialGraph extends View {
     private final Point point1;
     private final Point point2;
     private final Point point3;
+    private final Point point4;
+    private final Point point5;
 
     public SocialGraph(Context context) {
         super(context);
@@ -60,9 +62,11 @@ public class SocialGraph extends View {
 //            points.add(new Point(0,0));
 //        }
 //        selfPoint = new Point();
-        point1 = new Point(200, 300);
+        point1 = new Point((int)this.getX()/2, (int)this.getY()/2);
         point2 = new Point(700, 800);
         point3 = new Point(200, 800);
+        point4 = new Point(100,500);
+        point5 = new Point(400,400);
     }
 
     public SocialGraph(Context context, AttributeSet attrs) {
@@ -71,9 +75,11 @@ public class SocialGraph extends View {
         p.setStrokeWidth(5);
         path = new Path();
 
-        point1 = new Point(200, 300);
-        point2 = new Point(700, 800);
-        point3 = new Point(200, 800);
+        point1 = new Point(100, 200);
+        point2 = new Point(550, 600);
+        point3 = new Point(300, 900);
+        point4 = new Point(950,400);
+        point5 = new Point(800,1200);
     }
 
     public SocialGraph(Context context, AttributeSet attrs, int defStyle) {
@@ -85,6 +91,8 @@ public class SocialGraph extends View {
         point1 = new Point(200, 300);
         point2 = new Point(700, 800);
         point3 = new Point(200, 800);
+        point4 = new Point(500,800);
+        point5 = new Point(400,400);
     }
 
     @Override
@@ -103,7 +111,26 @@ public class SocialGraph extends View {
         path.moveTo(point2.x, point2.y);
         path.lineTo(point3.x, point3.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
+        p.setColor(Color.BLACK);
+        p.setStrokeWidth(10);
+        canvas.drawPath(path, p);
+
+        // draw the edge
+        path.reset();
+        path.moveTo(point2.x, point2.y);
+        path.lineTo(point4.x, point4.y);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.BLACK);
+        p.setStrokeWidth(20);
+        canvas.drawPath(path, p);
+
+        // draw the edge
+        path.reset();
+        path.moveTo(point2.x, point2.y);
+        path.lineTo(point5.x, point5.y);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.BLACK);
+        p.setStrokeWidth(5);
         canvas.drawPath(path, p);
 
         // draw first vertex
@@ -120,5 +147,15 @@ public class SocialGraph extends View {
         p.setStyle(Paint.Style.FILL);
         p.setColor(getResources().getColor(R.color.colorAccent));
         canvas.drawCircle(point3.x, point3.y, 25, p);
+
+        // draw third vertex
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(getResources().getColor(R.color.colorAccent));
+        canvas.drawCircle(point4.x, point4.y, 25, p);
+
+        // draw third vertex
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(getResources().getColor(R.color.colorAccent));
+        canvas.drawCircle(point5.x, point5.y, 25, p);
     }
 }
