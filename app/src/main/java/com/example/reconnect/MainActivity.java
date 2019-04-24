@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.addContact);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Summary.class));
+                startActivity(new Intent(MainActivity.this, AddContact.class));
             }
         });
 
