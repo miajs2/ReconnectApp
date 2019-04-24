@@ -14,14 +14,10 @@ import android.widget.Spinner;
 
 public class AddContact extends AppCompatActivity {
 
-    private static final int SELECT_PICTURE = 0;
-    private ImageView imageView;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact);
-
-        imageView = (ImageView) findViewById(android.R.id.icon);
 
         //get the spinner from the xml.
         Spinner dropdownNumber = findViewById(R.id.contact_number);
@@ -42,36 +38,6 @@ public class AddContact extends AppCompatActivity {
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         //set the spinners adapter to the previously created one.
         dropdownDate.setAdapter(adapter2);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            Bitmap bitmap = getPath(data.getData());
-            imageView.setImageBitmap(bitmap);
-        }
-    }
-
-    private Bitmap getPath(Uri uri) {
-
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String filePath = cursor.getString(column_index);
-        // cursor.close();
-        // Convert file path into bitmap image using below line.
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-        return bitmap;
-    }
-
-    private void selectImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
     }
 
 }

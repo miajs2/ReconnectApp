@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     int[] avatars = new int[]{
-            R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar,
+            R.drawable.alex, R.drawable.john, R.drawable.mary, R.drawable.sarah,
     };
 
     String[] lastConnected = new String[]{
