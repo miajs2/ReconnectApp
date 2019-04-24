@@ -9,4 +9,5 @@
     <string name="connection_frequency">How often would you like to connect with this contact?</string>
     <string name="contact_photo">Upload Contact Picture:</string>
     <string name="contact">Contacts</string>
+    <string name="summary_string">You reconnected with...</string>
 </resources>
