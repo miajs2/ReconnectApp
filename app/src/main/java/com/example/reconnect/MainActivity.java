@@ -43,6 +43,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button button2 = (Button) findViewById(R.id.viewSummary);
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Summary.class));
+            }
+        });
+
+        Button button3 = (Button) findViewById(R.id.viewNetwork);
+        button3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GraphView.class));
+            }
+        });
+
         List<HashMap<String, String>> aList = new ArrayList<>();
 
         for (int i = 0; i < 4; i++) {
