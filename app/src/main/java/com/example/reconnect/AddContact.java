@@ -19,6 +19,9 @@ public class AddContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact);
 
+        ImageView profPic = (ImageView) findViewById(R.id.icon);
+        //profPic.setImageResource(R.drawable.defaultPic);
+
         //get the spinner from the xml.
         Spinner dropdownNumber = findViewById(R.id.contact_number);
         //create a list of items for the spinner.
