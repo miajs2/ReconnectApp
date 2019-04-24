@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#D81B60</color>
     <color name="white">#FFFFFF</color>
+    <color name="edge1">#4CAF50</color>
+    <color name="edge2">#FF5722</color>
+    <color name="edge3">#FFC107</color>
+    <color name="edge4">#00BCD4</color>
 </resources>

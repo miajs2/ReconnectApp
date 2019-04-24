@@ -1,11 +1,16 @@
 package com.example.reconnect;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -75,11 +80,11 @@ public class SocialGraph extends View {
         p.setStrokeWidth(5);
         path = new Path();
 
-        point1 = new Point(100, 200);
+        point1 = new Point(120, 80);
         point2 = new Point(550, 600);
-        point3 = new Point(300, 900);
-        point4 = new Point(950,400);
-        point5 = new Point(800,1200);
+        point3 = new Point(200, 900);
+        point4 = new Point(800,400);
+        point5 = new Point(800,900);
     }
 
     public SocialGraph(Context context, AttributeSet attrs, int defStyle) {
@@ -103,7 +108,8 @@ public class SocialGraph extends View {
         path.moveTo(point1.x, point1.y);
         path.lineTo(point2.x, point2.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.BLACK);
+        p.setColor(Color.GRAY);
+        p.setStrokeWidth(10);
         canvas.drawPath(path, p);
 
         // draw the edge
@@ -111,8 +117,8 @@ public class SocialGraph extends View {
         path.moveTo(point2.x, point2.y);
         path.lineTo(point3.x, point3.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.BLACK);
-        p.setStrokeWidth(10);
+        p.setColor(Color.GRAY);
+        p.setStrokeWidth(15);
         canvas.drawPath(path, p);
 
         // draw the edge
@@ -120,8 +126,8 @@ public class SocialGraph extends View {
         path.moveTo(point2.x, point2.y);
         path.lineTo(point4.x, point4.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.BLACK);
-        p.setStrokeWidth(20);
+        p.setColor(Color.GRAY);
+        p.setStrokeWidth(25);
         canvas.drawPath(path, p);
 
         // draw the edge
@@ -129,33 +135,72 @@ public class SocialGraph extends View {
         path.moveTo(point2.x, point2.y);
         path.lineTo(point5.x, point5.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.BLACK);
-        p.setStrokeWidth(5);
+        p.setColor(Color.GRAY);
+        p.setStrokeWidth(10);
         canvas.drawPath(path, p);
+
+        Bitmap bm =
+                BitmapFactory.decodeResource(getResources(), R.drawable.alex);
+        Bitmap rect_avatar1 = Bitmap.createScaledBitmap(bm, 200, 200, false);
+        Bitmap avatar1 = getCroppedBitmap(rect_avatar1);
+
+        Bitmap bm2 = BitmapFactory.decodeResource(getResources(),R.drawable.john);
+        Bitmap rect_avatar2 = Bitmap.createScaledBitmap(bm2, 200, 200, false);
+        Bitmap avatar2 = getCroppedBitmap(rect_avatar2);
+
+        Bitmap bm3 = BitmapFactory.decodeResource(getResources(),R.drawable.mary);
+        Bitmap rect_avatar3 = Bitmap.createScaledBitmap(bm3, 200, 200, false);
+        Bitmap avatar3 = getCroppedBitmap(rect_avatar3);
+
+        Bitmap bm4 = BitmapFactory.decodeResource(getResources(),R.drawable.sarah);
+        Bitmap rect_avatar4 = Bitmap.createScaledBitmap(bm4, 200, 200, false);
+        Bitmap avatar4 = getCroppedBitmap(rect_avatar4);
 
         // draw first vertex
         p.setStyle(Paint.Style.FILL);
         p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawCircle(point1.x, point1.y, 25, p);
+        canvas.drawBitmap(avatar1,point1.x-50, point1.y-50, null);
 
         // draw second vertex
         p.setStyle(Paint.Style.FILL);
-        p.setColor(getResources().getColor(R.color.colorPrimary));
-        canvas.drawCircle(point2.x, point2.y, 25, p);
+        p.setColor(getResources().getColor(R.color.colorAccent));
+        canvas.drawCircle(point2.x, point2.y, 80, p);
 
         // draw third vertex
         p.setStyle(Paint.Style.FILL);
         p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawCircle(point3.x, point3.y, 25, p);
+        canvas.drawBitmap(avatar2,point3.x-100, point3.y-50, null);
 
         // draw third vertex
         p.setStyle(Paint.Style.FILL);
         p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawCircle(point4.x, point4.y, 25, p);
+        canvas.drawBitmap(avatar3,point4.x-100, point4.y-80, null);
 
         // draw third vertex
         p.setStyle(Paint.Style.FILL);
         p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawCircle(point5.x, point5.y, 25, p);
+        canvas.drawBitmap(avatar4,point5.x-100, point5.y-80, null);
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
 }
