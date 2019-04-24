@@ -12,8 +12,17 @@ import java.util.ArrayList;
 //Notes for this class: Handles creation of the database
 //Also provides functionality  for adding data into the database.
 //Methods for data processing are static, so can be used with other activities.
-//TODO: Need to add methods to allow for efficient retrieval of data from database (e.g. filtering based on date, filtering based by person etc.)
 
+//TODO: Need to add methods to allow for efficient retrieval of data from database (e.g. filtering based on date, filtering based by person etc.)
+//TODO: Create more helper methods: one method needed for retrieving person object.
+//TODO: Return list of all connections, where each entry is an individual person.
+//Get method to retrieve id given person's first and last name
+//Get method to retrieve a person's  id
+//Get last n interactions (return as an arraylist of persons).
+//Contact and Communication table.
+
+
+//Names: Alex Baker, John Joes, Mary Smith, Sarah Adams.
 public class MainActivity extends AppCompatActivity {
 
     protected  ReconnectDBHelper helper;
