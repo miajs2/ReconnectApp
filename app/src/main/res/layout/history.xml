@@ -8,13 +8,13 @@
     android:paddingTop="40dp">
 
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Alex Baker"
-        android:textStyle="bold"
-        android:textSize="25dp"/>
+        android:layout_gravity="center"
+        android:textSize="25dp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="March 22, 2019"
             android:textStyle="bold"
-            android:textSize="35sp"/>
+            android:textSize="12sp"/>
 
     </LinearLayout>
 
@@ -48,17 +48,16 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/phone_icon"
-            />
+            android:layout_width="133dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/phone_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="February 22, 2019"
             android:textStyle="bold"
-            android:textSize="35sp"/>
+            android:textSize="12sp"/>
 
     </LinearLayout>
 
@@ -72,17 +71,16 @@
 
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/message_icon"
-            />
+            android:layout_width="112dp"
+            android:layout_height="101dp"
+            android:src="@drawable/message_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="January 22, 2019"
             android:textStyle="bold"
-            android:textSize="35sp"/>
+            android:textSize="12p"/>
 
     </LinearLayout>
 
