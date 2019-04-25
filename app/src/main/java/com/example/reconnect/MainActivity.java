@@ -144,12 +144,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
         helper = new ReconnectDBHelper(this);
-        tableToString(helper.getReadableDatabase(), ReconnectContract.Person.TABLE_NAME);
-        tableToString(helper.getReadableDatabase(), ReconnectContract.Interaction.TABLE_NAME);
+       // helper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + ReconnectContract.Person.TABLE_NAME);
+        //helper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + ReconnectContract.Interaction.TABLE_NAME);
 
-       // Log.i("Main acrivity class", ReconnectContract.createPersonTable());
-        //Log.i("Main activity class", ReconnectContract.createInteractionTable());
+
+        helper.getWritableDatabase().execSQL(ReconnectContract.createPersonTable());
+        helper.getWritableDatabase().execSQL(ReconnectContract.createInteractionTable());
+
+        Log.i("running", "running");
+        //tableToString(helper.getReadableDatabase(), ReconnectContract.Person.TABLE_NAME);
+        //tableToString(helper.getReadableDatabase(), ReconnectContract.Interaction.TABLE_NAME);
+
+        /**
+        boolean added =  addPersonRecord("Alex", "Baker", "", "Cousin", "5");
+       added = addInteractionRecord("2019-3-20", "5", "Phone", "Talked about school. Call next month" , "Alex", "Baker");
+        if (added){
+            Log.i("Added interaction", "Added call with Baker");
+        }else{
+            Log.i("Failed to add", "Did not add call with Baker");
+        }
+
+        **/
+        boolean added =  addPersonRecord("Philip", "Jones", "", "Brother", "7");
+        ArrayList<Communication> interactions = getAllInteractions();
+        Log.i("First interaction", interactions.get(0).date);
+        ArrayList<Contact> friends = getContacts();
+        Log.i("First friend", friends.get(0).first_name);
+        Log.i("First friend", friends.get(1).first_name);
+       ArrayList<Communication> chats = getAllInteractionsForPerson("Alex", "Baker", 100);
+        Log.i("Chat with baker:", chats.get(0).type);
     }
+
+    //Tested create tables, add persons to table, add interactions to table, get interaction, get contacts
+    //Test
 
     /**
      *Add a single person's record to the person table.
@@ -157,10 +184,9 @@ public class MainActivity extends AppCompatActivity {
      * @param lastName
      * @param pictureLoc
      * @param freq_contact
-     * @param db: need to pass in database in write mode (ie. mydatabase.getWritableDatabase())
      * @return
      */
-    public static boolean addPersonRecord(String firstName, String lastName, String pictureLoc, String relationship,  String freq_contact, SQLiteDatabase db){
+    public boolean addPersonRecord(String firstName, String lastName, String pictureLoc, String relationship,  String freq_contact){
 
       //Map of values where column names are used as keys.
        ContentValues values = new ContentValues();
@@ -170,11 +196,11 @@ public class MainActivity extends AppCompatActivity {
        values.put(ReconnectContract.Person.CONTACT_RELATIONSHIP, relationship);
        values.put(ReconnectContract.Person.CONTACT_FREQUENCY, freq_contact);
 
-
+       SQLiteDatabase db = helper.getWritableDatabase();
        try{
 
-          db.insert(ReconnectContract.Person.TABLE_NAME, null, values);
-          return true;
+          long value = db.insert(ReconnectContract.Person.TABLE_NAME, null, values);
+          return value >= 0;
 
 
        }catch(Exception e){
@@ -324,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
         cursor.moveToNext();
         int id_Column = cursor.getColumnIndexOrThrow(ReconnectContract.Person._ID);
         String id = cursor.getString(id_Column);
+        Log.i("Id for " + firstName, id);
         cursor.close();
         return id;
     }
@@ -452,21 +479,21 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
 
-    public  boolean addInteractionRecord(String date, String duration, String type, String notes, String first_name, String last_name, SQLiteDatabase db){
+    public  boolean addInteractionRecord(String date, String duration, String type, String notes, String first_name, String last_name){
 
         String contact_id = getIDFromName(first_name, last_name);
         return addInteractionRecord(date, duration, type, notes, contact_id);
     }
 
     protected void onDestroy(){
-        helper.close();
+//        helper.close();
         super.onDestroy();
     }
 
 
    //Method gotten from stack overflow to help with printing (https://stackoverflow.com/questions/27003486/printing-all-rows-of-a-sqlite-database-in-android)
     public String tableToString(SQLiteDatabase db, String tableName) {
-        Log.d("","tableToString called");
+        Log.d("Print method called","tableToString called");
         String tableString = String.format("Table %s:\n", tableName);
         Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
         tableString += cursorToString(allRows);

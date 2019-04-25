@@ -24,11 +24,11 @@ public final class ReconnectContract {
     //we inherit an _ID field because we extend BaseColumns
     public static class Person implements BaseColumns {
       public static final String TABLE_NAME = "Person";
-      public static final String FIRST_NAME = "First Name";
-      public static final String LAST_NAME = "Last Name";
+      public static final String FIRST_NAME = "First_Name";
+      public static final String LAST_NAME = "Last_Name";
       public static final String PIC_LOCATION = "Picture";
       public static final String CONTACT_RELATIONSHIP = "Relationship";
-      public static final String CONTACT_FREQUENCY = "Frequency of Contact";
+      public static final String CONTACT_FREQUENCY = "Frequency_of_Contact";
 
     }
 
@@ -39,7 +39,7 @@ public final class ReconnectContract {
         public static final String DURATION = "Duration_Mins";
         public static final String TYPE = "Type";
         public static final String NOTES = "Notes";
-        public static final String CONTACT_ID = "Contact ID";
+        public static final String CONTACT_ID = "Contact_ID";
     }
 
 
