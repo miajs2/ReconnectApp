@@ -30,7 +30,6 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     protected  ReconnectDBHelper helper; //should be initialized in main class
-    protected  SQLiteDatabase db; //reference to the database object.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +37,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         helper = new ReconnectDBHelper(this);
-        tableToString(helper.getReadableDatabase(), ReconnectContract.Person.TABLE_NAME);
-        tableToString(helper.getReadableDatabase(), ReconnectContract.Interaction.TABLE_NAME);
+        Log.i("running", "running");
+        //tableToString(helper.getReadableDatabase(), ReconnectContract.Person.TABLE_NAME);
+        //tableToString(helper.getReadableDatabase(), ReconnectContract.Interaction.TABLE_NAME);
+        boolean added =  addPersonRecord("Alex", "Baker", "", "Cousin", "5");
 
-       // Log.i("Main acrivity class", ReconnectContract.createPersonTable());
-        //Log.i("Main activity class", ReconnectContract.createInteractionTable());
+       added = addInteractionRecord("2019-3-20", "5", "Phone", "Talked about school. Call next month" , "Alex", "Baker" );
+        if (added){
+            Log.i("Added interaction", "Added call with Baker");
+        }else{
+            Log.i("Failed to add", "Did not add call with Baker");
+        }
     }
 
     /**
@@ -51,10 +56,9 @@ public class MainActivity extends AppCompatActivity {
      * @param lastName
      * @param pictureLoc
      * @param freq_contact
-     * @param db: need to pass in database in write mode (ie. mydatabase.getWritableDatabase())
      * @return
      */
-    public static boolean addPersonRecord(String firstName, String lastName, String pictureLoc, String relationship,  String freq_contact, SQLiteDatabase db){
+    public boolean addPersonRecord(String firstName, String lastName, String pictureLoc, String relationship,  String freq_contact){
 
       //Map of values where column names are used as keys.
        ContentValues values = new ContentValues();
@@ -64,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
        values.put(ReconnectContract.Person.CONTACT_RELATIONSHIP, relationship);
        values.put(ReconnectContract.Person.CONTACT_FREQUENCY, freq_contact);
 
-
+       SQLiteDatabase db = helper.getWritableDatabase();
        try{
 
-          db.insert(ReconnectContract.Person.TABLE_NAME, null, values);
-          return true;
+          long value = db.insert(ReconnectContract.Person.TABLE_NAME, null, values);
+          return value >= 0;
 
 
        }catch(Exception e){
@@ -202,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     //get id of person given their first and last name.
     public String getIDFromName(String firstName, String lastName){
+        SQLiteDatabase db = helper.getReadableDatabase();
         String selection = ReconnectContract.Person.FIRST_NAME + " = ? AND " +
                 ReconnectContract.Person.LAST_NAME + " = ?";
         String[] selectionArgs = {firstName, lastName};
@@ -279,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         String selection = ReconnectContract.Person._ID + " = ?"; //filter based on the person's id, which matches contact_id in interactions table.
         String[] selectionArgs = {contact_id};
         try {
-            int deletedRows = db.delete(ReconnectContract.Person.TABLE_NAME, selection, selectionArgs);
+            int deletedRows = helper.getWritableDatabase().delete(ReconnectContract.Person.TABLE_NAME, selection, selectionArgs);
             return true;
         }catch(Exception e){
             Log.i("Main activity failed", "Can't delete from contact table");
@@ -317,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
          String selection = ReconnectContract.Interaction.CONTACT_ID + " = ? " + ReconnectContract.Interaction.TYPE + " = ? " + ReconnectContract.Interaction.DATE + " = ?";
          String[] selectionArgs = {contact_id, typeInteraction, dateInteraction};
          try {
-             int deletedRows = db.delete(ReconnectContract.Interaction.TABLE_NAME, selection, selectionArgs);
+             int deletedRows = helper.getWritableDatabase().delete(ReconnectContract.Interaction.TABLE_NAME, selection, selectionArgs);
              return true;
          }catch(Exception e){
              Log.i("Main activity failed", "Can't delete from interactions table");
@@ -345,21 +350,21 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
 
-    public  boolean addInteractionRecord(String date, String duration, String type, String notes, String first_name, String last_name, SQLiteDatabase db){
+    public  boolean addInteractionRecord(String date, String duration, String type, String notes, String first_name, String last_name){
 
         String contact_id = getIDFromName(first_name, last_name);
         return addInteractionRecord(date, duration, type, notes, contact_id);
     }
 
     protected void onDestroy(){
-        helper.close();
+//        helper.close();
         super.onDestroy();
     }
 
 
    //Method gotten from stack overflow to help with printing (https://stackoverflow.com/questions/27003486/printing-all-rows-of-a-sqlite-database-in-android)
     public String tableToString(SQLiteDatabase db, String tableName) {
-        Log.d("","tableToString called");
+        Log.d("Print method called","tableToString called");
         String tableString = String.format("Table %s:\n", tableName);
         Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
         tableString += cursorToString(allRows);
