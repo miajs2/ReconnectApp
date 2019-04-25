@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,9 +22,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 
 
 //Notes for this class: Handles creation of the database
@@ -130,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String[] from = {"name", "last_connected", "avatars"};
-        int[] to = {R.id.name, R.id.last_connected, R.id.avatar};
+        int[] to = {R.id.name, R.id.date, R.id.avatar};
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.contact_home_screen, from, to);
         ListView androidListView = (ListView) findViewById(R.id.list_view);
