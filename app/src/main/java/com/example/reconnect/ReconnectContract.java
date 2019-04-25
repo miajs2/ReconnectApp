@@ -42,18 +42,23 @@ public final class ReconnectContract {
         public static final String CONTACT_ID = "Contact ID";
     }
 
+
+
+    //DONE
     //sql string for generating person table
     public  static String createPersonTable () {
-        String CREATE_PERSON_TABLE = "CREATE TABLE [IF NOT EXISTS] " + Person.TABLE_NAME
+        String CREATE_PERSON_TABLE = "CREATE TABLE IF NOT EXISTS " + Person.TABLE_NAME
                 + " (" + Person._ID + " INTEGER PRIMARY KEY, " + Person.FIRST_NAME + " TEXT NOT NULL, "
                 + Person.LAST_NAME + " TEXT NOT NULL, " + Person.CONTACT_RELATIONSHIP + " TEXT, " + Person.CONTACT_FREQUENCY +  " TEXT NOT NULL, " + Person.PIC_LOCATION + " TEXT)";
         return CREATE_PERSON_TABLE;
     }
 
+
+    //DONE
     //sql string for generating interaction table
     //TODO: Add constraints check for foreign key (interaction.contact_id). Should be tied to a valid person_id in the person table.
     public static String createInteractionTable (){
-        String CREATE_INTERACTION_TABLE = "CREATE TABLE [IF NOT EXISTS] " + Interaction.TABLE_NAME +
+        String CREATE_INTERACTION_TABLE = "CREATE TABLE IF NOT EXISTS " + Interaction.TABLE_NAME +
                 " (" + Interaction._ID + " INTEGER PRIMARY KEY, " + Interaction.CONTACT_ID + " INTEGER NOT NULL, " + Interaction.DATE + " TEXT NOT NULL, " +
                 Interaction.DURATION + " TEXT NOT NULL, " + Interaction.TYPE + " TEXT NOT NULL, " +
                 Interaction.NOTES + " TEXT NOT NULL)";
