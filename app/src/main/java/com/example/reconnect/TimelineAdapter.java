@@ -38,6 +38,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.dateView.setText(animal);
         holder.durationView.setText("45 min");
         holder.modeView.setImageResource(R.drawable.phone_icon);
+        holder.commentView.setImageResource(R.drawable.ic_comment_black_24dp);
         holder.myLine.setBackgroundResource(R.drawable.line_bg);
     }
 
@@ -51,6 +52,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         TextView dateView;
         TextView durationView;
         ImageView modeView;
+        ImageView commentView;
         FrameLayout myLine;
 
         ViewHolder(View itemView) {
@@ -58,6 +60,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             dateView = itemView.findViewById(R.id.timeline_date);
             durationView = itemView.findViewById(R.id.timeline_duration);
             modeView = itemView.findViewById(R.id.interaction_mode);
+            commentView = itemView.findViewById(R.id.interaction_comment);
             myLine = itemView.findViewById(R.id.item_line);
             itemView.setOnClickListener(this);
         }
