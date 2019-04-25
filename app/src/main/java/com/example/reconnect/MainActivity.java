@@ -1,6 +1,7 @@
 package com.example.reconnect;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -307,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
     //get id of person given their first and last name.
     public String getIDFromName(String firstName, String lastName){
+        SQLiteDatabase db = helper.getReadableDatabase();
         String selection = ReconnectContract.Person.FIRST_NAME + " = ? AND " +
                 ReconnectContract.Person.LAST_NAME + " = ?";
         String[] selectionArgs = {firstName, lastName};
@@ -384,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
         String selection = ReconnectContract.Person._ID + " = ?"; //filter based on the person's id, which matches contact_id in interactions table.
         String[] selectionArgs = {contact_id};
         try {
-            int deletedRows = db.delete(ReconnectContract.Person.TABLE_NAME, selection, selectionArgs);
+            int deletedRows = helper.getWritableDatabase().delete(ReconnectContract.Person.TABLE_NAME, selection, selectionArgs);
             return true;
         }catch(Exception e){
             Log.i("Main activity failed", "Can't delete from contact table");
@@ -422,7 +424,7 @@ public class MainActivity extends AppCompatActivity {
          String selection = ReconnectContract.Interaction.CONTACT_ID + " = ? " + ReconnectContract.Interaction.TYPE + " = ? " + ReconnectContract.Interaction.DATE + " = ?";
          String[] selectionArgs = {contact_id, typeInteraction, dateInteraction};
          try {
-             int deletedRows = db.delete(ReconnectContract.Interaction.TABLE_NAME, selection, selectionArgs);
+             int deletedRows = helper.getWritableDatabase().delete(ReconnectContract.Interaction.TABLE_NAME, selection, selectionArgs);
              return true;
          }catch(Exception e){
              Log.i("Main activity failed", "Can't delete from interactions table");
