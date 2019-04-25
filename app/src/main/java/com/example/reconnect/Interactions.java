@@ -34,32 +34,22 @@ public class Interactions extends AppCompatActivity {
         durationSpinner.setAdapter(adapter2);
 
         final DatePicker datePicker = (DatePicker) findViewById(R.id.date_picker);
-       final  Button addContact = findViewById(R.id.createInteraction);
+        final Button addContact = findViewById(R.id.createInteraction);
+        final EditText notesView = (EditText) findViewById(R.id.notes);
 
-        addContact.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Toast.makeText(Interactions.this, datePicker.getDayOfMonth()+""+datePicker.getMonth()+""+datePicker.getYear(),Toast.LENGTH_LONG).show();
-            }
-        });
-
-        //final EditText notesView = (EditText) findViewById(R.id.notes);
-
-        /*
-        Button addContact = findViewById(R.id.createInteraction);
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //String notes = notesView.getText().toString();
-                //String type = typeSpinner.getSelectedItem().toString();
-                //String duration = durationSpinner.getSelectedItem().toString();
-                //Date date1 = (Date) new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-                //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                //String dateString = sdf.format(date1);
-                //startActivity(new Intent(Interactions.this, Timeline.class));
+                Toast.makeText(Interactions.this, datePicker.getDayOfMonth()+""+datePicker.getMonth()+""+datePicker.getYear(),Toast.LENGTH_LONG).show();
+                String notes = notesView.getText().toString();
+                String type = typeSpinner.getSelectedItem().toString();
+                String duration = durationSpinner.getSelectedItem().toString();
+                Date date1 = (Date) new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String dateString = sdf.format(date1);
+                startActivity(new Intent(Interactions.this, Timeline.class));
             }
         });
-        */
-
 
     }
 }
