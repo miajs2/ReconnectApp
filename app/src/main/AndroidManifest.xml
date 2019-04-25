@@ -17,6 +17,7 @@
         <activity android:name=".History"></activity>
         <activity android:name=".AddContact" android:label="@string/new_contact"></activity>
         <activity android:name=".Interactions" android:label="@string/view_contact"></activity>
+        <activity android:name=".Timeline" android:label="Timeline" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
