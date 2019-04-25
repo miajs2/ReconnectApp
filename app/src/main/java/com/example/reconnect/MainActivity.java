@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         androidListView.setAdapter(simpleAdapter);
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) {
-                Intent n = new Intent(getApplicationContext(), Interactions.class);
+                Intent n = new Intent(getApplicationContext(), Timeline.class);
                 n.putExtra("position", position);
                 startActivity(n);
             }

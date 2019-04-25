@@ -1,6 +1,8 @@
 package com.example.reconnect;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,8 +22,18 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
 
+        // adds back button to top bar
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // adds floating action button for adding an interaction
+        FloatingActionButton fab = findViewById(R.id.addInteraction);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Timeline.this, Interactions.class));
+            }
+        });
 
         recyclerView = findViewById(R.id.timeline_recycler_view);
 
@@ -55,6 +67,12 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked ", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
 }
