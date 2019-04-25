@@ -23,6 +23,10 @@
             android:name=".AddContact"
             android:label="@string/new_contact">
         </activity>
+        <activity
+            android:name=".Interactions"
+            android:label="@string/view_contact">
+        </activity>
     </application>
 
 </manifest>
