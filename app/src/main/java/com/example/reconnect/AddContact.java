@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -40,12 +42,16 @@ public class AddContact extends AppCompatActivity {
 
         setContentView(R.layout.add_contact);
 
-        Spinner dropdownNumber = findViewById(R.id.contact_number);
+        final EditText firstName = findViewById(R.id.first_name);
+        final EditText lastName = findViewById(R.id.last_name);
+        final ImageView profPic = (ImageView) findViewById(R.id.icon);
+
+        final Spinner dropdownNumber = findViewById(R.id.contact_number);
         String[] items1 = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items1);
         dropdownNumber.setAdapter(adapter1);
 
-        Spinner dropdownDate = findViewById(R.id.contact_date);
+        final Spinner dropdownDate = findViewById(R.id.contact_date);
         String[] items2 = new String[]{"Weeks", "Months", "Years"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         dropdownDate.setAdapter(adapter2);
@@ -61,6 +67,21 @@ public class AddContact extends AppCompatActivity {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
+
+        Button addContact = findViewById(R.id.createContact);
+        addContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String fName = firstName.getText().toString();
+                String lName = lastName.getText().toString();
+                String number = dropdownNumber.getSelectedItem().toString();
+                String date = dropdownDate.getSelectedItem().toString();
+                String frequency = number + " " + date;
+                Bitmap image=((BitmapDrawable)profPic.getDrawable()).getBitmap();
+                startActivity(new Intent(AddContact.this, MainActivity.class));
+            }
+        });
+
     }
 
     @Override
