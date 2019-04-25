@@ -36,19 +36,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         helper = new ReconnectDBHelper(this);
+       // helper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + ReconnectContract.Person.TABLE_NAME);
+        //helper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + ReconnectContract.Interaction.TABLE_NAME);
+
+
+        helper.getWritableDatabase().execSQL(ReconnectContract.createPersonTable());
+        helper.getWritableDatabase().execSQL(ReconnectContract.createInteractionTable());
+
         Log.i("running", "running");
         //tableToString(helper.getReadableDatabase(), ReconnectContract.Person.TABLE_NAME);
         //tableToString(helper.getReadableDatabase(), ReconnectContract.Interaction.TABLE_NAME);
-        boolean added =  addPersonRecord("Alex", "Baker", "", "Cousin", "5");
 
-       added = addInteractionRecord("2019-3-20", "5", "Phone", "Talked about school. Call next month" , "Alex", "Baker" );
+        /**
+        boolean added =  addPersonRecord("Alex", "Baker", "", "Cousin", "5");
+       added = addInteractionRecord("2019-3-20", "5", "Phone", "Talked about school. Call next month" , "Alex", "Baker");
         if (added){
             Log.i("Added interaction", "Added call with Baker");
         }else{
             Log.i("Failed to add", "Did not add call with Baker");
         }
+
+        **/
+        boolean added =  addPersonRecord("Philip", "Jones", "", "Brother", "7");
+        ArrayList<Communication> interactions = getAllInteractions();
+        Log.i("First interaction", interactions.get(0).date);
+        ArrayList<Contact> friends = getContacts();
+        Log.i("First friend", friends.get(0).first_name);
+        Log.i("First friend", friends.get(1).first_name);
+       ArrayList<Communication> chats = getAllInteractionsForPerson("Alex", "Baker", 100);
+        Log.i("Chat with baker:", chats.get(0).type);
     }
+
+    //Tested create tables, add persons to table, add interactions to table, get interaction, get contacts
+    //Test
 
     /**
      *Add a single person's record to the person table.
@@ -222,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
         cursor.moveToNext();
         int id_Column = cursor.getColumnIndexOrThrow(ReconnectContract.Person._ID);
         String id = cursor.getString(id_Column);
+        Log.i("Id for " + firstName, id);
         cursor.close();
         return id;
     }
