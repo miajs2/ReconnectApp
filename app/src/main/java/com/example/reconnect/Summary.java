@@ -72,7 +72,7 @@ public class Summary extends AppCompatActivity {
 
         // Get dropdown from XML
         Spinner dropdownHistory = findViewById(R.id.history);
-        String[] histories = new String[]{"One Week", "One Month", "One Year"};
+        String[] histories = new String[]{"1 Week", "2 Weeks","1 Month", "3 Months", "6 Months", "1 Year"};
         ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
         dropdownHistory.setAdapter(historyAdapter);
 
