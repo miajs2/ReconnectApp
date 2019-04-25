@@ -8,39 +8,63 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 public class AddContact extends AppCompatActivity {
 
+    private static int RESULT_LOAD_IMAGE = 1;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_contact);
 
-        ImageView profPic = (ImageView) findViewById(R.id.icon);
-        //profPic.setImageResource(R.drawable.defaultPic);
-
-        //get the spinner from the xml.
         Spinner dropdownNumber = findViewById(R.id.contact_number);
-        //create a list of items for the spinner.
         String[] items1 = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items1);
-        //set the spinners adapter to the previously created one.
         dropdownNumber.setAdapter(adapter1);
 
-        //get the spinner from the xml.
         Spinner dropdownDate = findViewById(R.id.contact_date);
-        //create a list of items for the spinner.
         String[] items2 = new String[]{"Weeks", "Months", "Years"};
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
-        //set the spinners adapter to the previously created one.
         dropdownDate.setAdapter(adapter2);
+
+        Button buttonLoadImage = (Button) findViewById(R.id.uploadPicture);
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            ImageView profPic = (ImageView) findViewById(R.id.icon);
+            profPic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
     }
 
 }

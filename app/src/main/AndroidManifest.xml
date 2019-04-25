@@ -10,22 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".GraphView" android:label="Your Network"></activity>
-        <activity android:name=".Summary" android:label="Summary" />
-        <activity android:name=".History" />
+        <activity android:name=".Summary" android:label="Summary"></activity>
+        <activity android:name=".History"></activity>
+        <activity android:name=".AddContact" android:label="@string/new_contact"></activity>
+        <activity android:name=".Interactions" android:label="@string/view_contact"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".AddContact"
-            android:label="@string/new_contact">
-        </activity>
-        <activity
-            android:name=".Interactions"
-            android:label="@string/view_contact">
         </activity>
     </application>
 
