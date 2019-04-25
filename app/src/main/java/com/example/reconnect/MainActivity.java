@@ -37,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //helper = new ReconnectDBHelper(this);
-       // db =  helper.getWritableDatabase();
-        Log.i("Main acrivity class", ReconnectContract.createPersonTable());
-        Log.i("Main activity class", ReconnectContract.createInteractionTable());
+        helper = new ReconnectDBHelper(this);
+        tableToString(helper.getReadableDatabase(), ReconnectContract.Person.TABLE_NAME);
+        tableToString(helper.getReadableDatabase(), ReconnectContract.Interaction.TABLE_NAME);
+
+       // Log.i("Main acrivity class", ReconnectContract.createPersonTable());
+        //Log.i("Main activity class", ReconnectContract.createInteractionTable());
     }
 
     /**
@@ -352,5 +354,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy(){
         helper.close();
         super.onDestroy();
+    }
+
+
+   //Method gotten from stack overflow to help with printing (https://stackoverflow.com/questions/27003486/printing-all-rows-of-a-sqlite-database-in-android)
+    public String tableToString(SQLiteDatabase db, String tableName) {
+        Log.d("","tableToString called");
+        String tableString = String.format("Table %s:\n", tableName);
+        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
+        tableString += cursorToString(allRows);
+        return tableString;
+    }
+
+    //Method gotten from stack overflow to help with printing (https://stackoverflow.com/questions/27003486/printing-all-rows-of-a-sqlite-database-in-android)
+    public String cursorToString(Cursor cursor){
+        String cursorString = "";
+        if (cursor.moveToFirst() ){
+            String[] columnNames = cursor.getColumnNames();
+            for (String name: columnNames)
+                cursorString += String.format("%s ][ ", name);
+            cursorString += "\n";
+            do {
+                for (String name: columnNames) {
+                    cursorString += String.format("%s ][ ",
+                            cursor.getString(cursor.getColumnIndex(name)));
+                }
+                cursorString += "\n";
+            } while (cursor.moveToNext());
+        }
+        return cursorString;
     }
 }
