@@ -20,6 +20,9 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
 
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         recyclerView = findViewById(R.id.timeline_recycler_view);
 
         // use this setting to improve performance if you know that changes

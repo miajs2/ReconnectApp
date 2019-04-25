@@ -3,8 +3,13 @@ package com.example.reconnect;
 import android.content.Intent;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationMenu;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
+    private ActionBar toolbar;
+
     // Hardcoded data to test format
     String[] names = new String[]{
             "Alex Baker", "John Jones", "Mary Smith", "Sarah Adams",
@@ -51,10 +58,32 @@ public class MainActivity extends AppCompatActivity {
     protected  ReconnectDBHelper helper;
     protected  SQLiteDatabase db; //reference to the database object.
 
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            switch(menuItem.getItemId()) {
+                case R.id.navigation_contacts:
+                    return true;
+                case R.id.navigation_summary:
+                    startActivity(new Intent(MainActivity.this, Summary.class));
+                    return true;
+                case R.id.navigation_network:
+                    startActivity(new Intent(MainActivity.this, GraphView.class));
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = getSupportActionBar();
+
+        BottomNavigationView navigation = findViewById(R.id.navigationView);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         Button button = (Button) findViewById(R.id.addContact);
         button.setOnClickListener(new View.OnClickListener() {
