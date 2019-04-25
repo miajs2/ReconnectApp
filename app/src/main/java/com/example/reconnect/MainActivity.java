@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,31 +87,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Button button = (Button) findViewById(R.id.addContact);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        FloatingActionButton fab = findViewById(R.id.addContact);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, AddContact.class));
-            }
-        });
-
-        Button button2 = (Button) findViewById(R.id.viewSummary);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Summary.class));
-            }
-        });
-
-        Button button3 = (Button) findViewById(R.id.viewNetwork);
-        button3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, GraphView.class));
-            }
-        });
-
-        Button button4 = (Button) findViewById(R.id.viewTimeline);
-        button4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Timeline.class));
             }
         });
 
