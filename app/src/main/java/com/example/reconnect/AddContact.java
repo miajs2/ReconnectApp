@@ -10,9 +10,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -41,6 +41,7 @@ public class AddContact extends AppCompatActivity {
         }
 
         setContentView(R.layout.add_contact);
+        final DataManager manager = new DataManager(this);
 
         final EditText firstName = findViewById(R.id.first_name);
         final EditText lastName = findViewById(R.id.last_name);
@@ -77,7 +78,9 @@ public class AddContact extends AppCompatActivity {
                 String number = dropdownNumber.getSelectedItem().toString();
                 String date = dropdownDate.getSelectedItem().toString();
                 String frequency = number + " " + date;
-                Bitmap image=((BitmapDrawable)profPic.getDrawable()).getBitmap();
+                //Bitmap image=((BitmapDrawable)profPic.getDrawable()).getBitmap();
+                String path = "path to file";
+                manager.addPersonRecord(fName, lName, path, "", frequency);
                 startActivity(new Intent(AddContact.this, MainActivity.class));
             }
         });

@@ -24,11 +24,13 @@
 
     <Button
         android:id="@+id/uploadPicture"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/contact_photo"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:textSize="14dp"/>
 
     <ImageView
         android:id="@+id/icon"
@@ -71,11 +73,13 @@
 
     <Button
         android:id="@+id/createContact"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/create_contact"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:textSize="14dp"/>
 
 </LinearLayout>

@@ -22,9 +22,10 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:textColor="@android:color/black"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="15sp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/date"
