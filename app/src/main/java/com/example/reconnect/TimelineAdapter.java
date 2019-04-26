@@ -37,18 +37,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.dateView.setText(date);
         String duration = mData.get(position).duration;
         holder.durationView.setText(duration);
-        String mode = mData.get(position).duration;
-        int modeIcon = R.drawable.help_icon;
-        switch(mode) {
-            case "Phone":
-                modeIcon = R.drawable.phone_icon;
-                break;
-            case "Facetoface":
-                modeIcon = R.drawable.face_to_face_icon;
-                break;
-            case "Messaging":
-                modeIcon = R.drawable.message_icon;
-        }
+        String mode = mData.get(position).type;
+        int modeIcon = Helper.getModeIcon(mode);
         holder.modeView.setImageResource(modeIcon);
         holder.commentView.setImageResource(R.drawable.ic_comment_black_24dp);
         holder.myLine.setBackgroundResource(R.drawable.line_bg);

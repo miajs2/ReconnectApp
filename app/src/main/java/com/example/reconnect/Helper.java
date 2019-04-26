@@ -7,24 +7,31 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Helper {
 
     public static int getModeIcon(String mode) {
         int modeIcon = R.drawable.help_icon;
         switch(mode) {
-            case "Phone":
-                modeIcon = R.drawable.phone_icon;
-                break;
-            case "Facetoface":
+            case "In-Person Meeting":
                 modeIcon = R.drawable.face_to_face_icon;
+                break;
+            case "Phone Call":
+                modeIcon = R.drawable.phone_icon;
                 break;
             case "Messaging":
                 modeIcon = R.drawable.message_icon;
+                break;
+            case "Video Chat":
+                modeIcon = R.drawable.video_call_icon;
+                break;
         }
         return modeIcon;
     }
 
-    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+    public static Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -44,5 +51,12 @@ public class Helper {
         //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
         //return _bmp;
         return output;
+    }
+
+    public static String getDateTime(int year, int month, int day){
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month, day);
+        String format = "yyyy-MM-dd";
+        return new SimpleDateFormat(format).format(cal.getTime());
     }
 }
