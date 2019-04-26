@@ -1,11 +1,32 @@
 package com.example.reconnect;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class GraphView extends AppCompatActivity {
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            switch(menuItem.getItemId()) {
+                case R.id.navigation_contacts:
+                    startActivity(new Intent(GraphView.this, MainActivity.class));
+                    return true;
+                case R.id.navigation_summary:
+                    startActivity(new Intent(GraphView.this, Summary.class));
+                    return true;
+                case R.id.navigation_network:
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +35,9 @@ public class GraphView extends AppCompatActivity {
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        BottomNavigationView navigation = findViewById(R.id.navigationView);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Get dropdown from XML
         Spinner dropdownHistory = findViewById(R.id.history);

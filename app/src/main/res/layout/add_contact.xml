@@ -22,18 +22,18 @@
         android:layout_gravity="center_horizontal"
         android:hint="@string/last_name"/>
 
-    <TextView
+    <Button
+        android:id="@+id/uploadPicture"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:text="@string/contact_photo"
-        android:textSize="18dp" />
+        android:layout_marginBottom="20dp"
+        android:textSize="14dp"/>
 
     <ImageView
         android:id="@+id/icon"
-        android:src="@drawable/defaultpic"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_weight="1"
@@ -73,11 +73,13 @@
 
     <Button
         android:id="@+id/createContact"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/create_contact"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:textSize="14dp"/>
 
 </LinearLayout>

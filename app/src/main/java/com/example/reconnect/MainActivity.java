@@ -1,16 +1,28 @@
 package com.example.reconnect;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
 import android.util.Log;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 
 //Notes for this class: Handles creation of the database
@@ -29,7 +41,44 @@ import java.util.Date;
 //Names: Alex Baker, John Joes, Mary Smith, Sarah Adams.
 public class MainActivity extends AppCompatActivity {
 
-    protected  ReconnectDBHelper helper; //should be initialized in main class
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
+    private ActionBar toolbar;
+
+    // Hardcoded data to test format
+    String[] names = new String[]{
+            "Alex Baker", "John Jones", "Mary Smith", "Sarah Adams",
+    };
+
+
+    int[] avatars = new int[]{
+            R.drawable.alex, R.drawable.john, R.drawable.mary, R.drawable.sarah,
+    };
+
+    String[] lastConnected = new String[]{
+            "Last Connected: 3 weeks ago", "Last Connected: 5 months ago", "Last Connected: 2 days ago", "Last Connected: 7 weeks ago",
+    };
+
+  
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            switch(menuItem.getItemId()) {
+                case R.id.navigation_contacts:
+                    return true;
+                case R.id.navigation_summary:
+                    startActivity(new Intent(MainActivity.this, Summary.class));
+                    return true;
+                case R.id.navigation_network:
+                    startActivity(new Intent(MainActivity.this, GraphView.class));
+                    return true;
+            }
+            return false;
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +88,51 @@ public class MainActivity extends AppCompatActivity {
         DataManager manager = new DataManager(this);
     }
 
+
+
+        toolbar = getSupportActionBar();
+
+        BottomNavigationView navigation = findViewById(R.id.navigationView);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        FloatingActionButton fab = findViewById(R.id.addContact);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, AddContact.class));
+            }
+        });
+
+        List<HashMap<String, String>> aList = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            HashMap<String, String> hm = new HashMap<>();
+            hm.put("name", names[i]);
+            hm.put("last_connected", lastConnected[i]);
+            hm.put("avatars", Integer.toString(avatars[i]));
+            aList.add(hm);
+        }
+
+        String[] from = {"name", "last_connected", "avatars"};
+        int[] to = {R.id.name, R.id.date, R.id.avatar};
+
+        SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.contact_home_screen, from, to);
+        ListView androidListView = (ListView) findViewById(R.id.list_view);
+        androidListView.setAdapter(simpleAdapter);
+        androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) {
+                Intent n = new Intent(getApplicationContext(), Timeline.class);
+                n.putExtra("position", position);
+                startActivity(n);
+            }
+        });
+
+       
+    }
+
+   
+   
+
+    
 
 }
