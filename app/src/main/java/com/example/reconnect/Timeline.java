@@ -41,12 +41,17 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        final TextView name = (TextView) findViewById(R.id.timeline_name);
+
         // adds floating action button for adding an interaction
         FloatingActionButton fab = findViewById(R.id.addInteraction);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Timeline.this, AddInteraction.class));
+                String fullName = name.getText().toString();
+                Intent n = new Intent(getApplicationContext(), AddInteraction.class);
+                n.putExtra("fullName", fullName);
+                startActivity(n);
             }
         });
 
@@ -55,12 +60,17 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         bm = getCroppedBitmap(bm);
         avatar.setImageBitmap(bm);
 
-        TextView name = (TextView) findViewById(R.id.timeline_name);
         Bundle bundle = getIntent().getExtras();
+        String nameTemp = "";
 
         if(bundle.getString("fullName")!= null) {
-            name.setText(bundle.getString("fullName"));
+            nameTemp = bundle.getString("fullName");
+            name.setText(nameTemp);
         }
+
+        String[] names = nameTemp.split(" ");
+        String fName = names[0];
+        String lName = names[1];
 
         // Get dropdown from XML
         Spinner dropdownHistory = findViewById(R.id.timeline_spinner);
@@ -68,7 +78,7 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
         dropdownHistory.setAdapter(historyAdapter);
 
-        contactInteractions= dataManager.getAllInteractionsForPerson("Philip","Jones",10000);
+        contactInteractions= dataManager.getAllInteractionsForPerson(fName,lName,10000);
 
         recyclerView = findViewById(R.id.timeline_recycler_view);
 
