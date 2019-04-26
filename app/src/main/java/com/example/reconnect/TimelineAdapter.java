@@ -38,7 +38,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         String duration = mData.get(position).duration;
         holder.durationView.setText(duration);
         String mode = mData.get(position).duration;
-        int modeIcon;
+        int modeIcon = R.drawable.help_icon;
         switch(mode) {
             case "Phone":
                 modeIcon = R.drawable.phone_icon;
@@ -49,7 +49,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             case "Messaging":
                 modeIcon = R.drawable.message_icon;
         }
-        holder.modeView.setImageResource(R.drawable.phone_icon);
+        holder.modeView.setImageResource(modeIcon);
         holder.commentView.setImageResource(R.drawable.ic_comment_black_24dp);
         holder.myLine.setBackgroundResource(R.drawable.line_bg);
     }
