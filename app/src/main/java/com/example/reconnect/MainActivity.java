@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
             "Last Connected: 3 weeks ago", "Last Connected: 5 months ago", "Last Connected: 2 days ago", "Last Connected: 7 weeks ago",
     };
 
-  
-
+    protected  ReconnectDBHelper helper; //should be initialized in main class
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -79,16 +78,11 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         DataManager manager = new DataManager(this);
-    }
-
-
 
         toolbar = getSupportActionBar();
 
@@ -127,12 +121,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       
+
     }
 
-   
-   
 
-    
+
+
 
 }

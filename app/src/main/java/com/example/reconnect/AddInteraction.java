@@ -9,12 +9,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 
-public class Interactions extends AppCompatActivity {
+public class AddInteraction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.interactions);
@@ -38,14 +37,13 @@ public class Interactions extends AppCompatActivity {
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Interactions.this, datePicker.getDayOfMonth()+""+datePicker.getMonth()+""+datePicker.getYear(),Toast.LENGTH_LONG).show();
                 String notes = notesView.getText().toString();
                 String type = typeSpinner.getSelectedItem().toString();
                 String duration = durationSpinner.getSelectedItem().toString();
                 Date date1 = (Date) new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String dateString = sdf.format(date1);
-                startActivity(new Intent(Interactions.this, Timeline.class));
+                startActivity(new Intent(AddInteraction.this, Timeline.class));
             }
         });
 

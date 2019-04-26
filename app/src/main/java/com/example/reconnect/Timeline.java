@@ -42,7 +42,7 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Timeline.this, Interactions.class));
+                startActivity(new Intent(Timeline.this, AddInteraction.class));
             }
         });
 
