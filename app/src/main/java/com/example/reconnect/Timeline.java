@@ -29,9 +29,13 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
     private RecyclerView.Adapter mAdapter;
     private LinearLayoutManager layoutManager;
 
+    ArrayList<Communication> contactInteractions;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
+
+        DataManager dataManager = new DataManager(this);
 
         // adds back button to top bar
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -64,6 +68,8 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
         dropdownHistory.setAdapter(historyAdapter);
 
+        contactInteractions= dataManager.getAllInteractionsForPerson("Philip","Jones",10000);
+
         recyclerView = findViewById(R.id.timeline_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -74,17 +80,8 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<String> myData = new ArrayList<>();
-        myData.add("October 22, 2019");
-        myData.add("blah");
-        myData.add("blah");
-        myData.add("blah");
-        myData.add("blah");
-        myData.add("blah");
-        myData.add("blah");
-
         // specify an adapter (see also next example)
-        mAdapter = new TimelineAdapter(this, myData);
+        mAdapter = new TimelineAdapter(this, contactInteractions);
         ((TimelineAdapter) mAdapter).setClickListener(this);
         recyclerView.setAdapter(mAdapter);
 

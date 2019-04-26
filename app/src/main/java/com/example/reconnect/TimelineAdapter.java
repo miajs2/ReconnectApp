@@ -9,15 +9,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
-    private List<String> mData;
+    private ArrayList<Communication> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    TimelineAdapter(Context context, List<String> data) {
+    TimelineAdapter(Context context, ArrayList<Communication> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -32,9 +33,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String animal = "October 22, 2019";
-        holder.dateView.setText(animal);
-        holder.durationView.setText("45 min");
+        String date = mData.get(position).date;
+        holder.dateView.setText(date);
+        String duration = mData.get(position).duration;
+        holder.durationView.setText(duration);
+        String mode = mData.get(position).duration;
+        int modeIcon;
+        switch(mode) {
+            case "Phone":
+                modeIcon = R.drawable.phone_icon;
+                break;
+            case "Facetoface":
+                modeIcon = R.drawable.face_to_face_icon;
+                break;
+            case "Messaging":
+                modeIcon = R.drawable.message_icon;
+        }
         holder.modeView.setImageResource(R.drawable.phone_icon);
         holder.commentView.setImageResource(R.drawable.ic_comment_black_24dp);
         holder.myLine.setBackgroundResource(R.drawable.line_bg);
@@ -70,8 +84,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
-        return "October 22, 2019";
+    Communication getItem(int id) {
+        return mData.get(id);
     }
 
     // allows clicks events to be caught

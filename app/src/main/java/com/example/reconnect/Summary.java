@@ -79,7 +79,7 @@ public class Summary extends AppCompatActivity {
 
         // temporary list of contacts
         List<HashMap<String, String>> aList = new ArrayList<>();
-        dataManager.addInteractionRecord("2019-04-21","30 minutes","Phone","","Philip","Jones");
+//        dataManager.addInteractionRecord("2019-04-21","30 minutes","Phone","","Philip","Jones");
         myInteractions = dataManager.getAllInteractionsByDate(7);
 
         for (Communication interaction: myInteractions) {

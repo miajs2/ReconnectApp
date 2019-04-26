@@ -18,7 +18,7 @@
     <string-array name="interactions_array">
         <item>In-Person Meeting</item>
         <item>Phone Call</item>
-        <item>Text-Based Conversation</item>
+        <item>Messaging</item>
         <item>Video Chat</item>
     </string-array>
     <string name="interaction_date">Interaction Date:</string>
