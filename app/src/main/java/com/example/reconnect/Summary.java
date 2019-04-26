@@ -56,12 +56,14 @@ public class Summary extends AppCompatActivity {
         }
     };
 
-    ArrayList<Communication> interactions;
+    ArrayList<Communication> myInteractions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary2);
+
+        DataManager dataManager = new DataManager(this);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,18 +78,17 @@ public class Summary extends AppCompatActivity {
         dropdownHistory.setAdapter(historyAdapter);
 
         // temporary list of contacts
-        Communication c1 = new Communication("October 9, 2019", "45 min", "Phone","","Alex");
         List<HashMap<String, String>> aList = new ArrayList<>();
-        interactions = new ArrayList<>();
-        interactions.add(c1);
+//        dataManager.addInteractionRecord("2019-04-21","30 minutes","Phone","","Philip","Jones");
+        myInteractions = dataManager.getAllInteractionsByDate(7);
 
-        for (int i = 0; i < interactions.size(); i++) {
+        for (Communication interaction: myInteractions) {
             HashMap<String, String> hm = new HashMap<>();
-            hm.put("name", c1.contact_id);
-            hm.put("date", c1.date);
-            hm.put("avatars", Integer.toString(avatars[i]));
-            hm.put("mode", Integer.toString(modes[i]));
-            hm.put("duration", c1.duration);
+            hm.put("name", interaction.contact_id);
+            hm.put("date", interaction.date);
+            hm.put("avatars", Integer.toString(R.drawable.alex));
+            hm.put("mode", Integer.toString(R.drawable.phone_icon));
+            hm.put("duration", interaction.duration);
             aList.add(hm);
         }
 
