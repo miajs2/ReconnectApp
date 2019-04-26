@@ -45,19 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActionBar toolbar;
 
-    // Hardcoded data to test format
-    String[] names = new String[]{
-            "Alex Baker", "John Jones", "Mary Smith", "Sarah Adams",
-    };
-
-
-    int[] avatars = new int[]{
-            R.drawable.alex, R.drawable.john, R.drawable.mary, R.drawable.sarah,
-    };
-
-    String[] lastConnected = new String[]{
-            "Last Connected: 3 weeks ago", "Last Connected: 5 months ago", "Last Connected: 2 days ago", "Last Connected: 7 weeks ago",
-    };
+    ArrayList<Contact> myContacts;
 
     protected  ReconnectDBHelper helper; //should be initialized in main class
 
@@ -97,13 +85,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        myContacts = manager.getContacts();
+
         List<HashMap<String, String>> aList = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
+        for (Contact c : myContacts) {
             HashMap<String, String> hm = new HashMap<>();
-            hm.put("name", names[i]);
-            hm.put("last_connected", lastConnected[i]);
-            hm.put("avatars", Integer.toString(avatars[i]));
+            hm.put("name", c.first_name + " " + c.last_name);
+            hm.put("last_connected", "Last Connected: 5 weeks");
+            hm.put("avatars", Integer.toString(R.drawable.mary));
             aList.add(hm);
         }
 
