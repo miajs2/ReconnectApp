@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -141,9 +142,13 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 TextView nameView = (TextView) arg1.findViewById(R.id.name);
                 String fullName = nameView.getText().toString();
+//                ImageView avatarView = (ImageView) arg1.findViewById(R.id.timeline_avatar);
+//                Bitmap bitmapExtra = ((BitmapDrawable)avatarView.getDrawable()).getBitmap();
+//                String uriExtra = Helper.getImageUri(getApplicationContext(),bitmapExtra).toString();
                 Intent n = new Intent(getApplicationContext(), Timeline.class);
                 n.putExtra("position", position);
                 n.putExtra("fullName", fullName);
+//                n.putExtra("avatarURI", uriExtra);
                 startActivity(n);
             }
         });

@@ -1,5 +1,6 @@
 package com.example.reconnect;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -55,11 +56,6 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
             }
         });
 
-        ImageView avatar = (ImageView) findViewById(R.id.timeline_avatar);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.alex);
-        bm = Helper.getCroppedBitmap(bm);
-        avatar.setImageBitmap(bm);
-
         Bundle bundle = getIntent().getExtras();
         String nameTemp = "";
 
@@ -71,6 +67,11 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         String[] names = nameTemp.split(" ");
         String fName = names[0];
         String lName = names[1];
+
+        ImageView avatar = (ImageView) findViewById(R.id.timeline_avatar);
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+        bm = Helper.getCroppedBitmap(bm);
+        avatar.setImageBitmap(bm);
 
         // Get dropdown from XML
         Spinner dropdownHistory = findViewById(R.id.timeline_spinner);
