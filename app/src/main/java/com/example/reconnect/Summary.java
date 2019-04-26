@@ -89,7 +89,7 @@ public class Summary extends AppCompatActivity {
             hm.put("name", name);
             hm.put("date", interaction.date);
             hm.put("avatars", Integer.toString(R.drawable.alex));
-            hm.put("mode", Integer.toString(R.drawable.phone_icon));
+            hm.put("mode", Integer.toString(Helper.getModeIcon(interaction.type)));
             hm.put("duration", interaction.duration);
             aList.add(hm);
         }
