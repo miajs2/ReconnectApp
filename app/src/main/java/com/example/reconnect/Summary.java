@@ -80,11 +80,13 @@ public class Summary extends AppCompatActivity {
         // temporary list of contacts
         List<HashMap<String, String>> aList = new ArrayList<>();
 //        dataManager.addInteractionRecord("2019-04-21","30 minutes","Phone","","Philip","Jones");
-        myInteractions = dataManager.getAllInteractionsByDate(7);
+        myInteractions = dataManager.getAllInteractions();
 
         for (Communication interaction: myInteractions) {
             HashMap<String, String> hm = new HashMap<>();
-            hm.put("name", interaction.contact_id);
+            Contact c = dataManager.getNameFromID(interaction.contact_id);
+            String name = c.first_name + " " + c.last_name;
+            hm.put("name", name);
             hm.put("date", interaction.date);
             hm.put("avatars", Integer.toString(R.drawable.alex));
             hm.put("mode", Integer.toString(R.drawable.phone_icon));
