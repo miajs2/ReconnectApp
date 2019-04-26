@@ -70,6 +70,6 @@
         android:layout_marginRight="16dp"
         android:src="@drawable/add_24dp"
         app:tint="@color/white"
-        app:backgroundTint="@color/colorAccent2"/>
+        app:backgroundTint="@color/colorAccent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
