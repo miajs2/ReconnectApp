@@ -13,6 +13,8 @@ import android.provider.MediaStore;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -78,8 +80,10 @@ public class AddContact extends AppCompatActivity {
                 String number = dropdownNumber.getSelectedItem().toString();
                 String date = dropdownDate.getSelectedItem().toString();
                 String frequency = number + " " + date;
-                //Bitmap image=((BitmapDrawable)profPic.getDrawable()).getBitmap();
-                String path = "path to file";
+                Bitmap image=((BitmapDrawable)profPic.getDrawable()).getBitmap();
+                Uri tempUri = Helper.getImageUri(getApplicationContext(),image);
+                String path = tempUri.toString();
+                Log.i("Path",path);
                 manager.addPersonRecord(fName, lName, path, "", frequency);
                 startActivity(new Intent(AddContact.this, MainActivity.class));
             }

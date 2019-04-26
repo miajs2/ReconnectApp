@@ -9,10 +9,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import java.util.ArrayList;
@@ -88,13 +96,23 @@ public class MainActivity extends AppCompatActivity {
 
         myContacts = manager.getContacts();
 
-        List<HashMap<String, String>> aList = new ArrayList<>();
+        List<HashMap<String, Object>> aList = new ArrayList<>();
 
         for (Contact c : myContacts) {
-            HashMap<String, String> hm = new HashMap<>();
+            HashMap<String, Object> hm = new HashMap<>();
             hm.put("name", c.first_name + " " + c.last_name);
             hm.put("last_connected", "Last Connected: 5 weeks");
-            hm.put("avatars", Integer.toString(R.drawable.mary));
+            Uri uri = Uri.parse(c.pic_location);
+            Bitmap bm;
+            try {
+                bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+            } catch (Exception e) {
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+            }
+            bm = Helper.cropToSquare(bm);
+            bm = Helper.getCroppedBitmap(bm);
+            hm.put("avatars", bm);
             aList.add(hm);
         }
 
@@ -102,6 +120,21 @@ public class MainActivity extends AppCompatActivity {
         int[] to = {R.id.name, R.id.date, R.id.avatar};
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(getBaseContext(), aList, R.layout.contact_home_screen, from, to);
+        simpleAdapter.setViewBinder(new SimpleAdapter.ViewBinder(){
+
+            @Override
+            public boolean setViewValue(View view, Object data,
+                                        String textRepresentation) {
+                if( (view instanceof ImageView) & (data instanceof Bitmap) ) {
+                    ImageView iv = (ImageView) view;
+                    Bitmap bm = (Bitmap) data;
+                    iv.setImageBitmap(bm);
+                    return true;
+                }
+                return false;
+
+            }
+        });
         ListView androidListView = (ListView) findViewById(R.id.list_view);
         androidListView.setAdapter(simpleAdapter);
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -118,6 +151,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
+    }
 
 
 
