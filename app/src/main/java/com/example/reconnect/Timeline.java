@@ -52,7 +52,11 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         avatar.setImageBitmap(bm);
 
         TextView name = (TextView) findViewById(R.id.timeline_name);
-        name.setText("Alex Baker");
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle.getString("fullName")!= null) {
+            name.setText(bundle.getString("fullName"));
+        }
 
         // Get dropdown from XML
         Spinner dropdownHistory = findViewById(R.id.timeline_spinner);
