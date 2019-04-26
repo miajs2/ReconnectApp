@@ -21,6 +21,7 @@ import java.util.List;
 
 
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -104,9 +105,12 @@ public class MainActivity extends AppCompatActivity {
         ListView androidListView = (ListView) findViewById(R.id.list_view);
         androidListView.setAdapter(simpleAdapter);
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                TextView nameView = (TextView) arg1.findViewById(R.id.name);
+                String fullName = nameView.getText().toString();
                 Intent n = new Intent(getApplicationContext(), Timeline.class);
                 n.putExtra("position", position);
+                n.putExtra("fullName", fullName);
                 startActivity(n);
             }
         });
