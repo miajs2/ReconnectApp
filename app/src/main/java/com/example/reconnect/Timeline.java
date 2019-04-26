@@ -9,12 +9,16 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -31,6 +35,8 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
     private LinearLayoutManager layoutManager;
 
     ArrayList<Communication> contactInteractions;
+    ArrayList<Contact> contacts;
+    Contact timelineContact;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +74,27 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         String fName = names[0];
         String lName = names[1];
 
+        contacts = dataManager.getContacts();
+        for(Contact c: contacts){
+            String cName = c.first_name + " " + c.last_name;
+            String fullName = bundle.getString("fullName");
+            if(cName.equals(fullName)){
+                timelineContact = c;
+            }
+        }
+
+
         ImageView avatar = (ImageView) findViewById(R.id.timeline_avatar);
-        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+//        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.alex);
+        Uri uri = Uri.parse(timelineContact.pic_location);
+        Bitmap bm;
+        try {
+            bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+        } catch (Exception e) {
+            bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+        }
+        bm = Helper.cropToSquare(bm);
         bm = Helper.getCroppedBitmap(bm);
         avatar.setImageBitmap(bm);
 
