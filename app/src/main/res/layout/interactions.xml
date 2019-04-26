@@ -102,7 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="bottom|center_horizontal"
-                android:text="@string/add_interaction" />
+                android:text="@string/add_interaction"
+                android:textSize="14dp"
+                style="@style/Widget.MaterialComponents.Button"/>
         </LinearLayout>
     </ScrollView>
 

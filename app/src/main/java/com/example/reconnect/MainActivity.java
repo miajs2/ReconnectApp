@@ -24,6 +24,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,9 +102,11 @@ public class MainActivity extends AppCompatActivity {
         List<HashMap<String, Object>> aList = new ArrayList<>();
 
         for (Contact c : myContacts) {
+            ArrayList<Communication> contactInteractions = manager.getAllInteractionsForPerson(c.first_name,c.last_name,10000);
+            Communication mostRecent = contactInteractions.get(0);
             HashMap<String, Object> hm = new HashMap<>();
             hm.put("name", c.first_name + " " + c.last_name);
-            hm.put("last_connected", "Last Connected: 5 weeks");
+            hm.put("last_connected", "Last connected: " + mostRecent.date);
             Uri uri = Uri.parse(c.pic_location);
             Bitmap bm;
             try {

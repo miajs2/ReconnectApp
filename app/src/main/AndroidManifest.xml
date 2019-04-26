@@ -15,7 +15,7 @@
         <activity android:name=".GraphView" android:label="Your Network"></activity>
         <activity android:name=".Summary" android:label="Summary"></activity>
         <activity android:name=".AddContact" android:label="@string/new_contact"></activity>
-        <activity android:name=".AddInteraction" android:label="@string/view_contact"></activity>
+        <activity android:name=".AddInteraction" android:label="Add Interaction"></activity>
         <activity android:name=".Timeline" android:label="Timeline" />
         <activity android:name=".MainActivity">
             <intent-filter>
