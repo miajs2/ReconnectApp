@@ -84,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         DataManager manager = new DataManager(this);
 
+        //can also add other tests here.
+        Tests.runTests(manager); //tests for database
+
+
         toolbar = getSupportActionBar();
 
         BottomNavigationView navigation = findViewById(R.id.navigationView);
@@ -103,6 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
         for (Contact c : myContacts) {
             ArrayList<Communication> contactInteractions = manager.getAllInteractionsForPerson(c.first_name,c.last_name,10000);
+            if (contactInteractions == null || contactInteractions.isEmpty()){
+                continue;
+            }
             Communication mostRecent = contactInteractions.get(0);
             HashMap<String, Object> hm = new HashMap<>();
             hm.put("name", c.first_name + " " + c.last_name);
@@ -159,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     public String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);

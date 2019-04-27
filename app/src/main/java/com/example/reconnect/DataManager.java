@@ -120,7 +120,8 @@ public class DataManager {
                 ReconnectContract.Person.FIRST_NAME,
                 ReconnectContract.Person.LAST_NAME,
                 ReconnectContract.Person.PIC_LOCATION,
-                ReconnectContract.Person.CONTACT_RELATIONSHIP
+                ReconnectContract.Person.CONTACT_RELATIONSHIP,
+                ReconnectContract.Person.CONTACT_FREQUENCY
         };
 
         String sortOrder = ReconnectContract.Person.LAST_NAME  + " DESC";
@@ -141,6 +142,7 @@ public class DataManager {
             int lastNameColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.LAST_NAME);
             int picLocationColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.PIC_LOCATION);
             int relationshipColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_RELATIONSHIP);
+            int contactFreqColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_FREQUENCY);
 
             Contact myFriend = new Contact();
             myFriend.id = cursor.getString(indexIDColumn);
@@ -148,6 +150,7 @@ public class DataManager {
             myFriend.last_name = cursor.getString(lastNameColumn);
             myFriend.pic_location = cursor.getString(picLocationColumn);
             myFriend.contact_relationship = cursor.getString(relationshipColumn);
+            myFriend.contact_frequency = cursor.getString(contactFreqColumn);
             friends.add(myFriend);
         }
 
@@ -235,12 +238,72 @@ public class DataManager {
         String curDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
         curCalendar.add(Calendar.DATE, -1 *  nDays);
         String previousDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
-        String dateSelection = ReconnectContract.Interaction.DATE + " <= ? AND " + ReconnectContract.Interaction.DATE + " >= ?" ;
-        String[] dateRange = {curDate, previousDate};
-        return getInteractionsHelper(dateSelection, dateRange);
+        ArrayList<Communication> allCommunications = getAllInteractions();
+        ArrayList<Communication> datedComms = new ArrayList<>();
+        for(Communication cur: allCommunications){
+            if (cur.date.compareTo(previousDate) >= 0){
+                datedComms.add(cur);
+            }
+        }
+        return datedComms;
     }
 
 
+    /**
+     * Returns a list of people that you should reconnect with (each element in list is a Contact).
+     * Note: This method will also prompt you to connect with new contacts, even if you just added them.
+     * @return
+     */
+    public ArrayList<Contact> getReminders(){
+        ArrayList<Contact> friends = getContacts();
+        ArrayList<Contact> peopleToTalkTo = new ArrayList<>();
+        Calendar curCalendar = Calendar.getInstance();
+        String todayDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+        for (Contact friend: friends){
+            int freqContactInDays  =  getDaysFromString(friend.contact_frequency);
+
+            curCalendar.add(Calendar.DATE, -1 *  freqContactInDays);
+            //this is the previous date that the friends should have spoken by.
+            String idealReconnectDate  =curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+
+
+            ArrayList<Communication> contactInteractions = getAllInteractionsForPerson(friend.first_name,friend.last_name,10000);
+            if (contactInteractions.isEmpty()){ //no interaction with a person yet. Remind user to reconnect.
+                peopleToTalkTo.add(friend);
+                continue;
+            }
+
+            String previousReconnectDate = contactInteractions.get(0).date; //date you actually reconnected with the friend last.;
+            if (idealReconnectDate.compareTo(previousReconnectDate) > 0){ //you have not connected with this person recently
+                 peopleToTalkTo.add(friend);
+            }
+
+
+        }
+        return peopleToTalkTo;
+    }
+
+    //get the contact frequency info as an int in days
+    public int getDaysFromString(String contactFreq){
+        String[] time = contactFreq.split(" ");
+        int days = 7; //7 is just default (i.e. talk to person every week)
+        try{
+            days = Integer.parseInt(time[0]);
+
+            if (time[1].equalsIgnoreCase("weeks")){
+                days = days * 7;
+            }else if(time[1].equalsIgnoreCase("months")){
+                days = days * 30;
+            }else if(time[1].equalsIgnoreCase("years")){
+                days = days * 365;
+            }
+            return days;
+
+        }catch(Exception e){
+            Log.i("DataManager.java", "Could not process date");
+            return days;
+        }
+    }
 
 
 
@@ -328,6 +391,22 @@ public class DataManager {
         }catch(Exception e){
             Log.i("Main activity failed", "Can't delete from interactions table");
             return false;
+        }
+    }
+
+    /**
+     * Method to remove all the data from the database.
+     * Method must be passed "DELETEALL" to ensure that it is not called accidentally.
+     * Warning: Will clear out all contacts and interactions!
+     * Will reinitialize the tables with no values.
+     */
+    public void clearAllData(String deleteConfirmation){
+        if (deleteConfirmation.equals("DELETEALL")) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("DROP TABLE IF EXISTS " + ReconnectContract.Person.TABLE_NAME);
+            db.execSQL("DROP TABLE IF EXISTS " + ReconnectContract.Interaction.TABLE_NAME);
+            db.execSQL(ReconnectContract.createPersonTable());
+            db.execSQL(ReconnectContract.createInteractionTable());
         }
     }
 
