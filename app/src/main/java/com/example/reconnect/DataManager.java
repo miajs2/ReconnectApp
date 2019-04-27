@@ -212,9 +212,9 @@ public class DataManager {
 
         //get the date range for a person.
         Calendar curCalendar = Calendar.getInstance();
-        String curDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+        String curDate = formatCalendarDate(curCalendar);
         curCalendar.add(Calendar.DATE, -1 *  nDays);
-        String previousDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+        String previousDate = formatCalendarDate(curCalendar);
 
         //find the person's id.
         String  person_id = getIDFromName(firstName, lastName);
@@ -235,9 +235,9 @@ public class DataManager {
      */
     public  ArrayList<Communication> getAllInteractionsByDate(int nDays){
         Calendar curCalendar = Calendar.getInstance();
-        String curDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+        String curDate = formatCalendarDate(curCalendar);
         curCalendar.add(Calendar.DATE, -1 *  nDays);
-        String previousDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+        String previousDate = formatCalendarDate(curCalendar);
         ArrayList<Communication> allCommunications = getAllInteractions();
         ArrayList<Communication> datedComms = new ArrayList<>();
         for(Communication cur: allCommunications){
@@ -258,13 +258,13 @@ public class DataManager {
         ArrayList<Contact> friends = getContacts();
         ArrayList<Contact> peopleToTalkTo = new ArrayList<>();
         Calendar curCalendar = Calendar.getInstance();
-        String todayDate = curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+        String todayDate = formatCalendarDate(curCalendar);
         for (Contact friend: friends){
             int freqContactInDays  =  getDaysFromString(friend.contact_frequency);
 
             curCalendar.add(Calendar.DATE, -1 *  freqContactInDays);
             //this is the previous date that the friends should have spoken by.
-            String idealReconnectDate  =curCalendar.get(Calendar.YEAR) + "-" + curCalendar.get(Calendar.MONTH) + "-" + curCalendar.get(Calendar.DAY_OF_MONTH);
+            String idealReconnectDate = formatCalendarDate(curCalendar);
 
 
             ArrayList<Communication> contactInteractions = getAllInteractionsForPerson(friend.first_name,friend.last_name,10000);
@@ -283,7 +283,26 @@ public class DataManager {
         return peopleToTalkTo;
     }
 
-    //get the contact frequency info as an int in days
+
+
+    //properly format dates so that they are in the form YYYY-MM-DD
+    private String formatCalendarDate(Calendar curCalendar){
+        String curYear = curCalendar.get(Calendar.YEAR) + "";
+        String curMonth = curCalendar.get(Calendar.MONTH) + "";
+        String curDay = curCalendar.get(Calendar.DAY_OF_MONTH) + "";
+
+        //month goes from 0-11. Need to recalibrate to 1-12.
+        curMonth = (Integer.parseInt(curMonth) + 1) + "";
+        if (curMonth.length() < 2){
+            curMonth = "0" + curMonth;
+        }
+        if (curDay.length() < 2){
+            curDay = "0" + curDay;
+        }
+        return curYear + "-" + curMonth  + "-" + curDay;
+    }
+
+    //get the contact frequency info as an int in days. E.g Method will return 14 if string is "2 weeks"
     public int getDaysFromString(String contactFreq){
         String[] time = contactFreq.split(" ");
         int days = 7; //7 is just default (i.e. talk to person every week)
