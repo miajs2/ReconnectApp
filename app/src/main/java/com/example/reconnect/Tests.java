@@ -6,6 +6,22 @@ import java.util.ArrayList;
 
 public class Tests {
 
+
+    public static void addData(DataManager manager){
+        manager.addPersonRecord("John", "Emeka", "", "Uncle", "1 week");
+        manager.addPersonRecord("Harry", "Potter", "", "Colleague", "2 weeks");
+        manager.addPersonRecord("Barack", "Obama", "", "Friend", "1 year");
+        manager.addPersonRecord("Alex", "Baker", "", "Cousin", "1 month");
+        manager.addPersonRecord("Sarah", "Adams", "", "High school friend", "3 months");
+        manager.addPersonRecord("Joe", "Biden", "", "Friend", "2 weeks");
+
+        manager.addInteractionRecord("2019-04-28", "15 minutes", "Phone", "Talked with friend", "John", "Emeka");
+        manager.addInteractionRecord("2019-04-21", "25 minutes", "Messaging", "Chatted on Facebook with Sarah", "Sarah", "Adams");
+        manager.addInteractionRecord("2019-04-24", "50 minutes", "Face to face", "Met for lunch", "Alex", "Baker");
+        manager.addInteractionRecord("2019-03-15", "5 minutes", "Phone", "Talked with friend", "John", "Emeka");
+        manager.addInteractionRecord("2019-03-01", "17 minutes", "Phone", "Talked with uncle about soccer game", "John", "Emeka");
+        manager.addInteractionRecord("2019-01-01", "10 minutes", "Phone", "Talked with wizardry", "Harry", "Potter");
+    }
     public static void runTests(DataManager manager){
 
         /**
@@ -45,11 +61,11 @@ public class Tests {
          String lastDate = manager.getAllInteractionsForPerson(peterObj.first_name, peterObj.last_name, 30).get(0).date;
          Log.i("Peter last convo", lastDate );
 
-        ArrayList<Contact>  friendsToReconnectWith = manager.getReminders();
+        //ArrayList<Contact>  friendsToReconnectWith = manager.getContactsToReconnectWith();
 
-        Log.i("Length of list", friendsToReconnectWith.size() + "");
-        for (Contact c: friendsToReconnectWith){
-            Log.i("Reconnect_friend",  c.first_name);
-        }
+        //Log.i("Length of list", friendsToReconnectWith.size() + "");
+        //for (Contact c: friendsToReconnectWith){
+          //  Log.i("Reconnect_friend",  c.first_name);
+        //}
     }
 }

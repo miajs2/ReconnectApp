@@ -36,21 +36,6 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-
-//Notes for this class: Handles creation of the database
-//Also provides functionality  for adding data into the database.
-//Methods for data processing are static, so can be used with other activities.
-
-//TODO: Need to add methods to allow for efficient retrieval of data from database (e.g. filtering based on date, filtering based by person etc.)
-//TODO: Create more helper methods: one method needed for retrieving person object.
-//TODO: Return list of all connections, where each entry is an individual person.
-//Get method to retrieve id given person's first and last name
-//Get method to retrieve a person's  id
-//Get last n interactions (return as an arraylist of persons).
-//Contact and Communication table.
-
-
-//Names: Alex Baker, John Joes, Mary Smith, Sarah Adams.
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
@@ -59,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Contact> myContacts;
 
-    protected  ReconnectDBHelper helper; //should be initialized in main class
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -82,10 +67,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //initialize the data manager, which interfaces with database and has application logic
         DataManager manager = new DataManager(this);
 
-        //can also add other tests here.
-        Tests.runTests(manager); //tests for database
+        //clearing the database of all people and interactions.
+        //manager.clearAllData("DELETEALL");
+
+
+        Tests.addData(manager);
+
+
+        //Create notifications (i.e. reminders to reconnect) and deploy them.
+        ReconnectNotifications notifications = new ReconnectNotifications(this, manager);
+        notifications.deployNotifications();
+
+
+
+
+
+        //tests to ensure database and application logic are good. This line can be safely commented out.
+        //If running tests, ensure testing reflects data in database (Currently tests use person data that no longer exists,
+        //, so calling Tests.runTests() will crash.);
+        //can also add other tests here if wanted.
+        //Ensure that data is  correctly formatted and added before testing.
+        //Tests.addData(manager);
+       //Tests.runTests(manager);
 
 
         toolbar = getSupportActionBar();
@@ -163,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(n);
             }
         });
+
+
+
 
 
     }

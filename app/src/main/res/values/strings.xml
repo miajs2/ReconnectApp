@@ -35,5 +35,6 @@
         <item>5+ hours</item>
     </string-array>
     <string name="view_contact">"Put Contact Name Here"</string>
+    <string name="CHANNEL_ID">ReconnectReminderID</string>
 
 </resources>

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 
 //Have tested all methods excluding delete person, delete interaction and update methods.
@@ -250,13 +251,14 @@ public class DataManager {
 
 
     /**
-     * Returns a list of people that you should reconnect with (each element in list is a Contact).
+     * Returns a hashmap of people that you should reconnect with
+     * The keys are the contact objetcs, the values are the strings you want to display for those people.
      * Note: This method will also prompt you to connect with new contacts, even if you just added them.
      * @return
      */
-    public ArrayList<Contact> getReminders(){
+    public HashMap<Contact, String> getContactsToReconnectWith(){
         ArrayList<Contact> friends = getContacts();
-        ArrayList<Contact> peopleToTalkTo = new ArrayList<>();
+        HashMap<Contact, String> peopleToTalkTo = new HashMap<>();
         Calendar curCalendar = Calendar.getInstance();
         String todayDate = formatCalendarDate(curCalendar);
         for (Contact friend: friends){
@@ -268,20 +270,80 @@ public class DataManager {
 
 
             ArrayList<Communication> contactInteractions = getAllInteractionsForPerson(friend.first_name,friend.last_name,10000);
-            if (contactInteractions.isEmpty()){ //no interaction with a person yet. Remind user to reconnect.
-                peopleToTalkTo.add(friend);
+            if (contactInteractions.isEmpty()){ //no interaction with a person yet. Remind user to initiate interaction.
+                peopleToTalkTo.put(friend, "You have not connected with " + friend.first_name + " yet.");
                 continue;
             }
 
             String previousReconnectDate = contactInteractions.get(0).date; //date you actually reconnected with the friend last.;
-            if (idealReconnectDate.compareTo(previousReconnectDate) > 0){ //you have not connected with this person recently
-                 peopleToTalkTo.add(friend);
+
+            //if you have not connected with this person recently, generate reminder for communication.
+            if (idealReconnectDate.compareTo(previousReconnectDate) > 0){
+                 peopleToTalkTo.put(friend, reconnectMessage(friend.first_name, previousReconnectDate, todayDate));
             }
 
 
         }
         return peopleToTalkTo;
     }
+
+
+    /**
+     * TODO: Method is functional but does too much. Need to reorganize code into smaller methods.
+     * TODO: Also, might have rounding error in method because  in code logic, we are just getting the int component after division.
+     *
+     *
+     *   given date of previous interaction and the current date (or other point of reference),
+     *   return a personalized string for reconnection.
+     */
+
+
+     private String reconnectMessage(String firstName, String previousDate, String curDate){
+        String[] previousTime = previousDate.split("-");
+        String[] curTime = curDate.split("-");
+
+        int prevDay = Integer.parseInt(previousTime[2].trim());
+        int prevMonth = Integer.parseInt(previousTime[1].trim());
+        int prevYear = Integer.parseInt(previousTime[0].trim());
+
+        int curDay = Integer.parseInt(curTime[2].trim());
+        int curMonth = Integer.parseInt(curTime[1].trim());
+        int curYear = Integer.parseInt(curTime[0].trim());
+
+        curDay = curDay - prevDay;
+        if (curDay < 0){
+            curDay = curDay + 30;
+            curMonth = curMonth - 1;
+        }
+
+        curMonth = curMonth - prevMonth;
+        if (curMonth < 0){
+            curMonth = curMonth + 12;
+            curYear = curYear -  1;
+        }
+
+        curYear = curYear - prevYear;
+        if (curYear < 0){
+            throw new Error("Passing incorrect year data. Previous year should be less than or equal to the current year");
+        }
+        int totalDays = (curYear * 365) + (curMonth * 28) + curDay;
+        String message = "";
+
+        if (totalDays > 1 && totalDays < 14){
+            message = "It has been " + totalDays + " days since you last connected with " + firstName + ".";
+        }else if(totalDays >= 14 && totalDays <= 60){
+            message = "It has been " + totalDays / 7 + " weeks since you last connected with " + firstName + ".";
+        }else if(totalDays > 60 && totalDays < 365){
+            message = "It has been " + totalDays/30 + " months since you last connected with " + firstName + ".";
+        }else if(totalDays > 365){
+            message = "It has been over " + totalDays/365 + " years since you last connected with " + firstName + ".";
+        }
+
+        return message;
+
+     }
+
+
 
 
 
@@ -309,11 +371,11 @@ public class DataManager {
         try{
             days = Integer.parseInt(time[0]);
 
-            if (time[1].equalsIgnoreCase("weeks")){
+            if (time[1].equalsIgnoreCase("weeks") || time[1].equalsIgnoreCase("week") ){
                 days = days * 7;
-            }else if(time[1].equalsIgnoreCase("months")){
+            }else if(time[1].equalsIgnoreCase("months") || time[1].equalsIgnoreCase("month")){
                 days = days * 30;
-            }else if(time[1].equalsIgnoreCase("years")){
+            }else if(time[1].equalsIgnoreCase("years") || time[1].equalsIgnoreCase("year")){
                 days = days * 365;
             }
             return days;
@@ -357,6 +419,7 @@ public class DataManager {
 
     //get id of person given their first and last name.
     public String getIDFromName(String firstName, String lastName){
+         Log.i("Searching for id of ", firstName + " " + lastName);
         SQLiteDatabase db = helper.getReadableDatabase();
         String selection = ReconnectContract.Person.FIRST_NAME + " = ? AND " +
                 ReconnectContract.Person.LAST_NAME + " = ?";
