@@ -29,6 +29,7 @@ public class Tests {
         manager.addInteractionRecord("2019-02-07", "15 minutes", "Phone", "Talked with friend", "Peter", "Okolotu");
         manager.addInteractionRecord("2019-04-01", "15 minutes", "Phone", "Talked with friend", "Peter", "Okolotu");
         manager.addInteractionRecord("2019-03-15", "15 minutes", "Phone", "Talked with friend", "Peter", "Okolotu");
+        manager.addInteractionRecord("2019-04-27", "15 minutes", "Phone", "Talked with friend", "Peter", "Okolotu");
 
         String id = manager.getIDFromName("John", "Emeka");
         Log.i("John", id);
@@ -39,13 +40,16 @@ public class Tests {
         String firstName = manager.getNameFromID("27").first_name;
         Log.i("This should be Peter", firstName);
 
+         Contact peterObj = manager.getNameFromID("27");
+         Log.i("eveeu", peterObj + "");
+         String lastDate = manager.getAllInteractionsForPerson(peterObj.first_name, peterObj.last_name, 30).get(0).date;
+         Log.i("Peter last convo", lastDate );
 
+        ArrayList<Contact>  friendsToReconnectWith = manager.getReminders();
 
-        ArrayList<Communication>  interactions = manager.getAllInteractionsForPerson("Peter", "Okolotu", 30);
-
-        Log.i("Length of list", interactions.size() + "");
-        for (Communication c: interactions){
-            Log.i("history", c.date + manager.getNameFromID(c.contact_id).first_name);
+        Log.i("Length of list", friendsToReconnectWith.size() + "");
+        for (Contact c: friendsToReconnectWith){
+            Log.i("Reconnect_friend",  c.first_name);
         }
     }
 }
