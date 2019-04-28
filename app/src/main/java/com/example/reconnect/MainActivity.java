@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         //clearing the database of all people and interactions.
         //manager.clearAllData("DELETEALL");
 
-
-        Tests.addData(manager);
+        //don't want to duplicate which data is added.
+        //Tests.addData(manager);
 
 
         //Create notifications (i.e. reminders to reconnect) and deploy them.
