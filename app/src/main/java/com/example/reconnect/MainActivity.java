@@ -27,6 +27,7 @@ import android.widget.SimpleAdapter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         myContacts = manager.getContacts();
+        Collections.sort(myContacts);
 
         List<HashMap<String, Object>> aList = new ArrayList<>();
 
