@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<Contact> myContacts;
 
-
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         //initialize the data manager, which interfaces with database and has application logic
         DataManager manager = new DataManager(this);
 
@@ -78,14 +75,10 @@ public class MainActivity extends AppCompatActivity {
         //don't want to duplicate which data is added.
         //Tests.addData(manager);
 
-
+        // TO BE UNCOMMENTED
         //Create notifications (i.e. reminders to reconnect) and deploy them.
         ReconnectNotifications notifications = new ReconnectNotifications(this, manager);
         notifications.deployNotifications();
-
-
-
-
 
         //tests to ensure database and application logic are good. This line can be safely commented out.
         //If running tests, ensure testing reflects data in database (Currently tests use person data that no longer exists,
@@ -94,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         //Ensure that data is  correctly formatted and added before testing.
         //Tests.addData(manager);
        //Tests.runTests(manager);
-
 
         toolbar = getSupportActionBar();
 
@@ -114,14 +106,17 @@ public class MainActivity extends AppCompatActivity {
         List<HashMap<String, Object>> aList = new ArrayList<>();
 
         for (Contact c : myContacts) {
+            /*
             ArrayList<Communication> contactInteractions = manager.getAllInteractionsForPerson(c.first_name,c.last_name,10000);
             if (contactInteractions == null || contactInteractions.isEmpty()){
                 continue;
             }
             Communication mostRecent = contactInteractions.get(0);
+            */
             HashMap<String, Object> hm = new HashMap<>();
             hm.put("name", c.first_name + " " + c.last_name);
-            hm.put("last_connected", "Last connected: " + mostRecent.date);
+            //hm.put("last_connected", "Last connected: " + mostRecent.date);
+            hm.put("last_connected", "Last connected: 3 weeks ago");
             Uri uri = Uri.parse(c.pic_location);
             Bitmap bm;
             try {
@@ -171,14 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(n);
             }
         });
-
-
-
-
-
     }
-
-
 
     public String getRealPathFromURI(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
@@ -186,8 +174,5 @@ public class MainActivity extends AppCompatActivity {
         int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
         return cursor.getString(idx);
     }
-
-
-
 
 }
