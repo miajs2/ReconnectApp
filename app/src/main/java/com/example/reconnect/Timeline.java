@@ -1,6 +1,8 @@
 package com.example.reconnect;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -129,11 +131,21 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked ", Toast.LENGTH_SHORT).show();
+        Communication c = contactInteractions.get(position);
+        String notes = c.notes;
+        if (notes.length() == 0) {
+            notes = "No notes recorded for this interaction.";
+        }
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setMessage(notes);
+
+        alertDialog.show();
     }
 
     @Override
