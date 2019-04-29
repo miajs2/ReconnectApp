@@ -83,6 +83,9 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
             }
         }
 
+        final TextView connectionFreq = (TextView) findViewById(R.id.connection_frequency);
+        String connFreq = timelineContact.contact_frequency.toLowerCase();
+        connectionFreq.setText("Goal: Connect every " + connFreq);
 
         ImageView avatar = (ImageView) findViewById(R.id.timeline_avatar);
 //        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.alex);
