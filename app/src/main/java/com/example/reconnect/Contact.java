@@ -1,6 +1,6 @@
 package com.example.reconnect;
 
-public class Contact {
+public class Contact implements Comparable<Contact> {
 
     public  String first_name;
     public  String last_name;
@@ -19,5 +19,10 @@ public class Contact {
         pic_location = loc;
         contact_relationship = rel;
         contact_frequency = freq;
+    }
+
+    @Override
+    public int compareTo(Contact c) {
+        return this.first_name.compareTo(c.first_name);
     }
 }
