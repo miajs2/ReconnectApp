@@ -1,13 +1,17 @@
 package com.example.reconnect;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +78,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     // convenience method for getting data at click position
-    Communication getItem(int id) {
+    public Communication getItem(int id) {
         return mData.get(id);
     }
 
