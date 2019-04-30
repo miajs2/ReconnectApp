@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -91,7 +93,15 @@ public class Summary extends AppCompatActivity {
             HashMap<String, Object> hm = new HashMap<>();
             Contact c = dataManager.getNameFromID(interaction.contact_id);
             String name = c.first_name + " " + c.last_name;
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.alex);
+            Uri uri = Uri.parse(c.pic_location);
+            Bitmap bm;
+            try {
+                bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+            } catch (Exception e) {
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+            }
+            bm = Helper.cropToSquare(bm);
             bm = Helper.getCroppedBitmap(bm);
             hm.put("name", name);
             hm.put("date", interaction.date);
