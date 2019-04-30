@@ -26,10 +26,10 @@ public class DataManager {
      }
 
     //Tested create tables, add persons to table, add interactions to table, get interaction, get contacts
-    //Test
 
     /**
-     *Add a single person's record to the person table.
+     *Add a single person's record to the person table.This method is overloaded.
+     *
      * @param firstName
      * @param lastName
      * @param pictureLoc
@@ -37,7 +37,15 @@ public class DataManager {
      * @return
      */
     public boolean addPersonRecord(String firstName, String lastName, String pictureLoc, String relationship,  String freq_contact){
+        //add timestamp of when this record was added.
+        Calendar today = Calendar.getInstance();
+        String add_date = this.formatCalendarDate(today);
+        return addPersonRecord(firstName, lastName,pictureLoc,relationship,freq_contact,add_date);
+    }
 
+
+   //Allows you to manually specify when the person's record is added.
+    public boolean addPersonRecord(String firstName, String lastName, String pictureLoc, String relationship,  String freq_contact, String add_date){
         //Map of values where column names are used as keys.
         ContentValues values = new ContentValues();
         values.put(ReconnectContract.Person.FIRST_NAME, firstName);
@@ -45,6 +53,7 @@ public class DataManager {
         values.put(ReconnectContract.Person.PIC_LOCATION, pictureLoc);
         values.put(ReconnectContract.Person.CONTACT_RELATIONSHIP, relationship);
         values.put(ReconnectContract.Person.CONTACT_FREQUENCY, freq_contact);
+        values.put(ReconnectContract.Person.CONTACT_ADD_DATE, add_date);
 
         SQLiteDatabase db = helper.getWritableDatabase();
         try{
@@ -58,6 +67,9 @@ public class DataManager {
         }
         return false;
     }
+
+
+
 
     /**
      *
@@ -77,6 +89,7 @@ public class DataManager {
         String contact_id = getIDFromName(first_name, last_name);
         return addInteractionRecord(date, duration, type, notes, contact_id);
     }
+
 
 
 
@@ -122,7 +135,8 @@ public class DataManager {
                 ReconnectContract.Person.LAST_NAME,
                 ReconnectContract.Person.PIC_LOCATION,
                 ReconnectContract.Person.CONTACT_RELATIONSHIP,
-                ReconnectContract.Person.CONTACT_FREQUENCY
+                ReconnectContract.Person.CONTACT_FREQUENCY,
+                ReconnectContract.Person.CONTACT_ADD_DATE
         };
 
         String sortOrder = ReconnectContract.Person.LAST_NAME  + " DESC";
@@ -144,6 +158,7 @@ public class DataManager {
             int picLocationColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.PIC_LOCATION);
             int relationshipColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_RELATIONSHIP);
             int contactFreqColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_FREQUENCY);
+            int dateAddedColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_ADD_DATE);
 
             Contact myFriend = new Contact();
             myFriend.id = cursor.getString(indexIDColumn);
@@ -152,6 +167,8 @@ public class DataManager {
             myFriend.pic_location = cursor.getString(picLocationColumn);
             myFriend.contact_relationship = cursor.getString(relationshipColumn);
             myFriend.contact_frequency = cursor.getString(contactFreqColumn);
+            myFriend.date_added = cursor.getString(dateAddedColumn);
+
             friends.add(myFriend);
         }
 
@@ -251,9 +268,9 @@ public class DataManager {
 
 
     /**
+     * TODO: Thoroughly test for edge cases (particularly new contacts)
      * Returns a hashmap of people that you should reconnect with
      * The keys are the contact objetcs, the values are the strings you want to display for those people.
-     * Note: This method will also prompt you to connect with new contacts, even if you just added them.
      * @return
      */
     public HashMap<Contact, String> getContactsToReconnectWith(){
@@ -262,16 +279,35 @@ public class DataManager {
         Calendar curCalendar = Calendar.getInstance();
         String todayDate = formatCalendarDate(curCalendar);
         for (Contact friend: friends){
+            //how often to reconnect with a friend in days.
             int freqContactInDays  =  getDaysFromString(friend.contact_frequency);
 
+            //num of days which have passed since from date contact added to today.
+            int diffBetweenAddedDateAndToday = differenceInDays(friend.date_added, this.formatCalendarDate(Calendar.getInstance()));
+
+
             curCalendar.add(Calendar.DATE, -1 *  freqContactInDays);
-            //this is the previous date that the friends should have spoken by.
+
+             //date we expect you to have reconnected by.
             String idealReconnectDate = formatCalendarDate(curCalendar);
 
 
+
+
             ArrayList<Communication> contactInteractions = getAllInteractionsForPerson(friend.first_name,friend.last_name,10000);
-            if (contactInteractions.isEmpty()){ //no interaction with a person yet. Remind user to initiate interaction.
+
+
+
+            //no interaction with a person yet. If date of expected interaction has passed, remind user to initiate interaction.
+            //if date has not passed, user still has time to reconnect. No need to send reminder.
+            if (contactInteractions.isEmpty()&& diffBetweenAddedDateAndToday > freqContactInDays){
                 peopleToTalkTo.put(friend, "You have not connected with " + friend.first_name + " yet.");
+                continue;
+            }
+
+            //separate if statement needed because it's possible there's no interaction yet, and user still has time to add it.
+            //after this statement, we assume at least one interaction, so code may crash if statement removed.
+            if (contactInteractions.isEmpty()){
                 continue;
             }
 
@@ -287,7 +323,41 @@ public class DataManager {
         return peopleToTalkTo;
     }
 
+    //return the difference given two dates in days(integer).
+     private int differenceInDays(String previousDate, String curDate){
 
+         String[] previousTime = previousDate.split("-");
+         String[] curTime = curDate.split("-");
+
+         int prevDay = Integer.parseInt(previousTime[2].trim());
+         int prevMonth = Integer.parseInt(previousTime[1].trim());
+         int prevYear = Integer.parseInt(previousTime[0].trim());
+
+         int curDay = Integer.parseInt(curTime[2].trim());
+         int curMonth = Integer.parseInt(curTime[1].trim());
+         int curYear = Integer.parseInt(curTime[0].trim());
+
+         curDay = curDay - prevDay;
+         if (curDay < 0){
+             curDay = curDay + 30;
+             curMonth = curMonth - 1;
+         }
+
+         curMonth = curMonth - prevMonth;
+         if (curMonth < 0){
+             curMonth = curMonth + 12;
+             curYear = curYear -  1;
+         }
+
+         curYear = curYear - prevYear;
+         if (curYear < 0){
+             //throw new Error("Passing incorrect year data. Previous year should be less than or equal to the current year");
+             Log.i("Warning", "Previous date is larger than current date");
+         }
+         int totalDays = (curYear * 365) + (curMonth * 28) + curDay;
+         return totalDays;
+
+     }
     /**
      * TODO: Method is functional but does too much. Need to reorganize code into smaller methods.
      * TODO: Also, might have rounding error in method because  in code logic, we are just getting the int component after division.
@@ -299,34 +369,7 @@ public class DataManager {
 
 
      private String reconnectMessage(String firstName, String previousDate, String curDate){
-        String[] previousTime = previousDate.split("-");
-        String[] curTime = curDate.split("-");
-
-        int prevDay = Integer.parseInt(previousTime[2].trim());
-        int prevMonth = Integer.parseInt(previousTime[1].trim());
-        int prevYear = Integer.parseInt(previousTime[0].trim());
-
-        int curDay = Integer.parseInt(curTime[2].trim());
-        int curMonth = Integer.parseInt(curTime[1].trim());
-        int curYear = Integer.parseInt(curTime[0].trim());
-
-        curDay = curDay - prevDay;
-        if (curDay < 0){
-            curDay = curDay + 30;
-            curMonth = curMonth - 1;
-        }
-
-        curMonth = curMonth - prevMonth;
-        if (curMonth < 0){
-            curMonth = curMonth + 12;
-            curYear = curYear -  1;
-        }
-
-        curYear = curYear - prevYear;
-        if (curYear < 0){
-            throw new Error("Passing incorrect year data. Previous year should be less than or equal to the current year");
-        }
-        int totalDays = (curYear * 365) + (curMonth * 28) + curDay;
+        int totalDays = differenceInDays(previousDate, curDate);
         String message = "";
 
         if (totalDays > 1 && totalDays < 14){
