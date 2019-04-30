@@ -48,6 +48,7 @@ public class AddContact extends AppCompatActivity {
         final EditText firstName = findViewById(R.id.first_name);
         final EditText lastName = findViewById(R.id.last_name);
         final ImageView profPic = (ImageView) findViewById(R.id.icon);
+        profPic.setImageResource(R.drawable.default_avatar);
 
         final Spinner dropdownNumber = findViewById(R.id.contact_number);
         String[] items1 = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};

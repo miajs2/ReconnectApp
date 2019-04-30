@@ -450,10 +450,18 @@ public class DataManager {
         cursor.moveToNext();
         int firstName_Column = cursor.getColumnIndexOrThrow(ReconnectContract.Person.FIRST_NAME);
         int lastName_Column = cursor.getColumnIndexOrThrow(ReconnectContract.Person.LAST_NAME);
+        int picLocationColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.PIC_LOCATION);
+        int relationshipColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_RELATIONSHIP);
+        int contactFreqColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_FREQUENCY);
+
 
         Contact newPerson = new Contact();
         newPerson.first_name = cursor.getString(firstName_Column);
         newPerson.last_name = cursor.getString(lastName_Column);
+        newPerson.pic_location = cursor.getString(picLocationColumn);
+        newPerson.contact_relationship = cursor.getString(relationshipColumn);
+        newPerson.contact_frequency = cursor.getString(contactFreqColumn);
+
 
         cursor.close();
         return newPerson;

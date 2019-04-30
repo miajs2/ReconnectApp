@@ -7,9 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -22,27 +26,7 @@ import java.util.List;
 
 public class Summary extends AppCompatActivity {
 
-    // Hardcoded data to test format
-    String[] names = new String[]{
-            "Alex Baker", "John Jones", "Mary Smith", "Sarah Adams",
-    };
-
-
-    int[] avatars = new int[]{
-            R.drawable.alex, R.drawable.john, R.drawable.mary, R.drawable.sarah,
-    };
-
-    String[] lastConnected = new String[]{
-            "2 days ago", "5 days ago", "1 week ago", "3 weeks ago",
-    };
-
-    int[] modes = new int[]{
-            R.drawable.phone_icon, R.drawable.message_icon, R.drawable.face_to_face_icon, R.drawable.phone_icon,
-    };
-
-    String[] durations = new String[]{
-            "1h", "15m", "2h", "30m",
-    };
+    String selectedHistory = "";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -68,30 +52,74 @@ public class Summary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary2);
 
-        DataManager dataManager = new DataManager(this);
-
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         BottomNavigationView navigation = findViewById(R.id.navigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+        selectedHistory = "1 Week";
         // Get dropdown from XML
-        Spinner dropdownHistory = findViewById(R.id.history);
+        final Spinner dropdownHistory = findViewById(R.id.history);
         String[] histories = new String[]{"1 Week", "2 Weeks","1 Month", "3 Months", "6 Months", "1 Year"};
-        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
+        final ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
         dropdownHistory.setAdapter(historyAdapter);
+        dropdownHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedHistory = parent.getItemAtPosition(position).toString();
+                historyAdapter.notifyDataSetChanged();
+                getSummaryData();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedHistory = "1 Week";
+            }
+        });
+    }
+
+    public void getSummaryData() {
+        DataManager dataManager = new DataManager(this);
         // temporary list of contacts
         List<HashMap<String, Object>> aList = new ArrayList<>();
 //        dataManager.addInteractionRecord("2019-04-21","30 minutes","Phone","","Philip","Jones");
-        myInteractions = dataManager.getAllInteractions();
+
+        int days = 100000;
+        switch(selectedHistory){
+            case "1 Week":
+                days=7;
+                break;
+            case "2 Weeks":
+                days=14;
+                break;
+            case "1 Month":
+                days=30;
+                break;
+            case "3 Months":
+                days=90;
+                break;
+            case "6 Months":
+                days=180;
+                break;
+            case "1 Year":
+                days=365;
+                break;
+        }
+        myInteractions = dataManager.getAllInteractionsByDate(days);
 
         for (Communication interaction: myInteractions) {
             HashMap<String, Object> hm = new HashMap<>();
             Contact c = dataManager.getNameFromID(interaction.contact_id);
             String name = c.first_name + " " + c.last_name;
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.alex);
+            Uri uri = Uri.parse(c.pic_location);
+            Bitmap bm;
+            try {
+                bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+            } catch (Exception e) {
+                bm = BitmapFactory.decodeResource(getResources(), R.drawable.default_avatar);
+            }
+            bm = Helper.cropToSquare(bm);
             bm = Helper.getCroppedBitmap(bm);
             hm.put("name", name);
             hm.put("date", interaction.date);
