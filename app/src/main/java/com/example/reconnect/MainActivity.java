@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
          manager.clearAllData("DELETEALL");
 
         //don't want to duplicate which data is added.
-        Tests.addData(manager);
+       // Tests.addData(manager);
 
         // TO BE UNCOMMENTED
         //Create notifications (i.e. reminders to reconnect) and deploy them.
