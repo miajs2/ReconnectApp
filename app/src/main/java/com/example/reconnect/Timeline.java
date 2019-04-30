@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -41,12 +42,15 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
     ArrayList<Communication> contactInteractions;
     ArrayList<Contact> contacts;
     Contact timelineContact;
+    String selectedHistory = "";
+    String fName = "";
+    String lName = "";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline);
 
-        DataManager dataManager = new DataManager(this);
+        final DataManager dataManager = new DataManager(this);
 
         // adds back button to top bar
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -75,8 +79,8 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         }
 
         String[] names = nameTemp.split(" ");
-        String fName = names[0];
-        String lName = names[1];
+        fName = names[0];
+        lName = names[1];
 
         contacts = dataManager.getContacts();
         for(Contact c: contacts){
@@ -110,6 +114,43 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         String[] histories = new String[]{"1 Week", "2 Weeks","1 Month", "3 Months", "6 Months", "1 Year"};
         ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
         dropdownHistory.setAdapter(historyAdapter);
+        dropdownHistory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedHistory = parent.getItemAtPosition(position).toString();
+                getTimelineData(fName, lName, dataManager);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedHistory = "1 Week";
+            }
+        });
+
+    }
+
+    public void getTimelineData(String fName, String lName, DataManager dataManager) {
+        int days = 100000;
+        switch(selectedHistory){
+            case "1 Week":
+                days=7;
+                break;
+            case "2 Weeks":
+                days=14;
+                break;
+            case "1 Month":
+                days=30;
+                break;
+            case "3 Months":
+                days=90;
+                break;
+            case "6 Months":
+                days=180;
+                break;
+            case "1 Year":
+                days=365;
+                break;
+        }
 
         recyclerView = findViewById(R.id.timeline_recycler_view);
 
@@ -121,7 +162,7 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        contactInteractions= dataManager.getAllInteractionsForPerson(fName,lName,10000);
+        contactInteractions= dataManager.getAllInteractionsForPerson(fName,lName,days);
 
 
         // specify an adapter (see also next example)
@@ -133,7 +174,6 @@ public class Timeline extends AppCompatActivity implements TimelineAdapter.ItemC
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
     }
 
     @Override
