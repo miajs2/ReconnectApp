@@ -3,7 +3,11 @@ package com.example.reconnect;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -55,14 +59,24 @@ public class ReconnectNotifications {
               dataManager.updateContactReminder(friend.first_name, friend.last_name, "REMINDME");
               String reminder = contactWithInfo.getValue();
 
+              // Create an explicit intent for when a notification is clicked.
+              Intent intent = new Intent();
+              intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+              PendingIntent pendingIntent = PendingIntent.getActivity(previousActivity, 0, intent, 0);
+
+
+
               NotificationCompat.Builder builder =
                       new NotificationCompat.Builder(previousActivity, previousActivity.getString(R.string.CHANNEL_ID))
                               .setSmallIcon(R.drawable.reconnectreminder)
+                              .setColor(Color.BLUE)
                               .setContentTitle("Reconnect with " + friend.first_name)
                               .setContentText(reminder)
                               .setStyle(new NotificationCompat.BigTextStyle()
                               .bigText(reminder))
+                              .setContentIntent(pendingIntent)
                                .setAutoCancel(true);
+
 
               notificationList.put(builder, counter++); //add notification to notification list
           }

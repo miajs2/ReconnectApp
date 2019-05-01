@@ -114,6 +114,11 @@ public class DataManager {
         values.put(ReconnectContract.Interaction.TYPE, type);
         values.put(ReconnectContract.Interaction.CONTACT_ID, contact_id);
 
+        //when we add an interaction record, we reset our reminder status so that new reminders can be given to
+        //a person.
+        Contact curContact = getNameFromID(contact_id);
+        updateContactReminder(curContact.first_name, curContact.last_name, "");
+
         try{
             db.insert(ReconnectContract.Interaction.TABLE_NAME, null, values);
             return true;
