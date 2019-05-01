@@ -9,6 +9,7 @@ public class Contact implements Comparable<Contact> {
     public  String contact_frequency;
     public String id;
     public String date_added;
+    public String reminder_note;
 
     public Contact(){
 

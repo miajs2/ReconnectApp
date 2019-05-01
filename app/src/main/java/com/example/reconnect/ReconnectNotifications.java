@@ -42,11 +42,17 @@ public class ReconnectNotifications {
         dataManager = d;
     }
 
-    //TODO: still need to set upo a pendingIntent for the notification when clicked. Discuss with group.
+    //TODO: still need to set up a pendingIntent for the notification when clicked. Discuss with group.
+    //TODO: Remove hardcoded string which symbolizes we're preparing to remind someone.
+    //IMPORTANT NOTE: This method assumes that reminders will actually be displayed imminently, else unexpected behavior
+    //This is because "REMINDME" is essentially a flag that says that we have generated a reminder for this person already.
     public static void generateNotifications(){
+
+
           HashMap<Contact, String> contactsWithReminders = dataManager.getContactsToReconnectWith();
           for (HashMap.Entry<Contact, String> contactWithInfo : contactsWithReminders.entrySet()){
               Contact friend = contactWithInfo.getKey();
+              dataManager.updateContactReminder(friend.first_name, friend.last_name, "REMINDME");
               String reminder = contactWithInfo.getValue();
 
               NotificationCompat.Builder builder =

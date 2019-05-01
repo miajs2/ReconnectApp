@@ -136,7 +136,8 @@ public class DataManager {
                 ReconnectContract.Person.PIC_LOCATION,
                 ReconnectContract.Person.CONTACT_RELATIONSHIP,
                 ReconnectContract.Person.CONTACT_FREQUENCY,
-                ReconnectContract.Person.CONTACT_ADD_DATE
+                ReconnectContract.Person.CONTACT_ADD_DATE,
+                ReconnectContract.Person.REMINDER_NOTE
         };
 
         String sortOrder = ReconnectContract.Person.LAST_NAME  + " DESC";
@@ -159,8 +160,10 @@ public class DataManager {
             int relationshipColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_RELATIONSHIP);
             int contactFreqColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_FREQUENCY);
             int dateAddedColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_ADD_DATE);
+            int reminderNoteColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.REMINDER_NOTE);
 
             Contact myFriend = new Contact();
+
             myFriend.id = cursor.getString(indexIDColumn);
             myFriend.first_name = cursor.getString(firstNameColumn);
             myFriend.last_name = cursor.getString(lastNameColumn);
@@ -168,6 +171,7 @@ public class DataManager {
             myFriend.contact_relationship = cursor.getString(relationshipColumn);
             myFriend.contact_frequency = cursor.getString(contactFreqColumn);
             myFriend.date_added = cursor.getString(dateAddedColumn);
+            myFriend.reminder_note = cursor.getString(reminderNoteColumn);
 
             friends.add(myFriend);
         }
@@ -268,7 +272,7 @@ public class DataManager {
 
 
     /**
-     * TODO: Thoroughly test for edge cases (particularly new contacts)
+     * TODO: Need to remove hardcoded string for reminder check here.
      * Returns a hashmap of people that you should reconnect with
      * The keys are the contact objetcs, the values are the strings you want to display for those people.
      * @return
@@ -299,10 +303,11 @@ public class DataManager {
             ArrayList<Communication> contactInteractions = getAllInteractionsForPerson(friend.first_name,friend.last_name,10000);
 
 
+            boolean reminderAlreadyGiven = friend.reminder_note != null && friend.reminder_note.equalsIgnoreCase("REMINDME");
 
             //no interaction with a person yet. If date of expected interaction has passed, remind user to initiate interaction.
             //if date has not passed, user still has time to reconnect. No need to send reminder.
-            if (contactInteractions.isEmpty()&& diffBetweenAddedDateAndToday > freqContactInDays){
+            if (contactInteractions.isEmpty()&& diffBetweenAddedDateAndToday > freqContactInDays && reminderAlreadyGiven == false){
                 peopleToTalkTo.put(friend, "You have not connected with " + friend.first_name + " yet.");
                 continue;
             }
@@ -316,7 +321,7 @@ public class DataManager {
             String previousReconnectDate = contactInteractions.get(0).date; //date you actually reconnected with the friend last.;
 
             //if you have not connected with this person recently, generate reminder for communication.
-            if (idealReconnectDate.compareTo(previousReconnectDate) > 0){
+            if (idealReconnectDate.compareTo(previousReconnectDate) > 0 && reminderAlreadyGiven == false){
                  peopleToTalkTo.put(friend, reconnectMessage(friend.first_name, previousReconnectDate, todayDate));
             }
 
@@ -455,6 +460,8 @@ public class DataManager {
         int picLocationColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.PIC_LOCATION);
         int relationshipColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_RELATIONSHIP);
         int contactFreqColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.CONTACT_FREQUENCY);
+        int reminderNoteColumn = cursor.getColumnIndexOrThrow(ReconnectContract.Person.REMINDER_NOTE);
+
 
 
         Contact newPerson = new Contact();
@@ -463,6 +470,7 @@ public class DataManager {
         newPerson.pic_location = cursor.getString(picLocationColumn);
         newPerson.contact_relationship = cursor.getString(relationshipColumn);
         newPerson.contact_frequency = cursor.getString(contactFreqColumn);
+        newPerson.reminder_note = cursor.getString(reminderNoteColumn);
 
 
         cursor.close();
@@ -556,6 +564,20 @@ public class DataManager {
      */
     public boolean updateContact(String firstName, String lastName){
         return false;
+    }
+
+
+    public void updateContactReminder(String firstName, String lastName, String newReminder){
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ReconnectContract.Person.REMINDER_NOTE, newReminder);
+
+        String whereClause = ReconnectContract.Person._ID + " = ?";
+        String whereArgs[] = {getIDFromName(firstName, lastName)};
+        db.update(ReconnectContract.Person.TABLE_NAME, values, whereClause, whereArgs);
+
+
     }
 
 

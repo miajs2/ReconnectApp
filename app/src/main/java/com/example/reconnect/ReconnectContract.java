@@ -30,7 +30,7 @@ public final class ReconnectContract {
       public static final String CONTACT_RELATIONSHIP = "Relationship";
       public static final String CONTACT_FREQUENCY = "Frequency_of_Contact";
       public static final String CONTACT_ADD_DATE = "Date_Contact_Added";
-
+      public static final String REMINDER_NOTE = "Reminder";
     }
 
     //schema for one interaction
@@ -51,7 +51,7 @@ public final class ReconnectContract {
         String CREATE_PERSON_TABLE = "CREATE TABLE IF NOT EXISTS " + Person.TABLE_NAME
                 + " (" + Person._ID + " INTEGER PRIMARY KEY, " + Person.FIRST_NAME + " TEXT NOT NULL, "
                 + Person.LAST_NAME + " TEXT NOT NULL, " + Person.CONTACT_RELATIONSHIP + " TEXT, " + Person.CONTACT_FREQUENCY +  " TEXT NOT NULL, " + Person.PIC_LOCATION + " TEXT, "
-                + Person.CONTACT_ADD_DATE + " TEXT NOT NULL)";
+                + Person.CONTACT_ADD_DATE + " TEXT NOT NULL, " + Person.REMINDER_NOTE + " TEXT)";
         return CREATE_PERSON_TABLE;
     }
 
