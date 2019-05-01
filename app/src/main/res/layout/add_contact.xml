@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
-    android:paddingTop="40dp">
+    android:paddingTop="40dp"
+    android:background="@color/white">
 
     <EditText
         android:id="@+id/first_name"
@@ -29,13 +30,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/contact_photo"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
         android:textSize="14dp"/>
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_gravity="center_horizontal"/>
 
@@ -55,22 +57,31 @@
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal">
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_height="35dp"
-            android:background="@drawable/border">
+            android:background="@drawable/border"
+            android:layout_marginRight="8dp">
             <Spinner
                 android:id="@+id/contact_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:spinnerMode="dropdown"/>
+                android:spinnerMode="dropdown"
+                android:dropDownWidth="100dp"/>
         </LinearLayout>
-        <Spinner
-            android:id="@+id/contact_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"/>
+        <LinearLayout
+            android:layout_width="125dp"
+            android:layout_height="35dp"
+            android:background="@drawable/border"
+            android:layout_marginLeft="8dp">
+            <Spinner
+                android:id="@+id/contact_date"
+                android:layout_width="125dp"
+                android:layout_height="35dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:spinnerMode="dropdown"
+                android:dropDownWidth="125dp"/>
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -83,6 +94,6 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/create_contact"
         android:layout_marginBottom="20dp"
-        android:textSize="14dp"/>
+        android:textSize="18dp"/>
 
 </LinearLayout>
