@@ -284,8 +284,10 @@ public class DataManager {
 
             //num of days which have passed since from date contact added to today.
             int diffBetweenAddedDateAndToday = differenceInDays(friend.date_added, this.formatCalendarDate(Calendar.getInstance()));
-
-
+            
+             
+           
+            curCalendar = Calendar.getInstance();
             curCalendar.add(Calendar.DATE, -1 *  freqContactInDays);
 
              //date we expect you to have reconnected by.
