@@ -65,7 +65,7 @@
                 android:id="@+id/contact_number"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/colorAccent"
                 android:spinnerMode="dropdown"
                 android:dropDownWidth="100dp"/>
         </LinearLayout>
@@ -78,7 +78,7 @@
                 android:id="@+id/contact_date"
                 android:layout_width="125dp"
                 android:layout_height="35dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/colorAccent"
                 android:spinnerMode="dropdown"
                 android:dropDownWidth="125dp"/>
         </LinearLayout>

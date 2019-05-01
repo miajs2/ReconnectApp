@@ -64,7 +64,7 @@
                 android:id="@+id/timeline_spinner"
                 android:layout_width="200dp"
                 android:layout_height="35dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/colorAccent"
                 android:dropDownWidth="200dp"
                 android:overlapAnchor="false"
                 android:spinnerMode="dropdown" />

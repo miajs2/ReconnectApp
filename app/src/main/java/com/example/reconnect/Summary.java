@@ -19,10 +19,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Summary extends AppCompatActivity {
 
@@ -107,9 +111,12 @@ public class Summary extends AppCompatActivity {
         }
         myInteractions = dataManager.getAllInteractionsByDate(days);
 
+        Set<String> sumContacts = new HashSet<String>();
+
         for (Communication interaction: myInteractions) {
             HashMap<String, Object> hm = new HashMap<>();
             Contact c = dataManager.getNameFromID(interaction.contact_id);
+            sumContacts.add(interaction.contact_id);
             String name = c.first_name + " " + c.last_name;
             Uri uri = Uri.parse(c.pic_location);
             Bitmap bm;
@@ -128,6 +135,16 @@ public class Summary extends AppCompatActivity {
             hm.put("duration", interaction.duration);
             aList.add(hm);
         }
+
+        int numInteractions = myInteractions.size();
+        TextView sumString = (TextView) findViewById(R.id.summary_description);
+        String numContacts = "";
+        if (sumContacts.size() == 1) {
+            numContacts = "1 person";
+        } else {
+            numContacts = Integer.toString(sumContacts.size()) + " people";
+        }
+        sumString.setText("You reconnected " + Integer.toString(numInteractions) + " times with " + numContacts + " over the past " + selectedHistory.toLowerCase() + ":");
 
         String[] from = {"name", "date", "avatars", "mode", "duration"};
         int[] to = {R.id.name, R.id.date, R.id.avatar, R.id.mode, R.id.duration};
