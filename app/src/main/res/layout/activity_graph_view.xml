@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GraphView">
+    tools:context=".GraphView"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,38 +13,37 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="35dp"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/border"
-            tools:ignore="UselessParent">
+        <!--<LinearLayout-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--android:background="@drawable/border"-->
+            <!--tools:ignore="UselessParent">-->
 
-            <Spinner
-                android:id="@+id/history"
-                android:layout_width="200dp"
-                android:layout_height="35dp"
-                android:backgroundTint="@color/colorPrimary"
-                android:dropDownWidth="200dp"
-                android:overlapAnchor="false"
-                android:spinnerMode="dropdown"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </LinearLayout>
+            <!--<Spinner-->
+                <!--android:id="@+id/history"-->
+                <!--android:layout_width="200dp"-->
+                <!--android:layout_height="35dp"-->
+                <!--android:backgroundTint="@color/colorPrimary"-->
+                <!--android:dropDownWidth="200dp"-->
+                <!--android:overlapAnchor="false"-->
+                <!--android:spinnerMode="dropdown"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.496"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
     <com.example.reconnect.SocialGraph
         android:id="@+id/graph"
         android:layout_width="wrap_content"
-        android:layout_height="773dp"
-        android:layout_marginTop="64dp"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

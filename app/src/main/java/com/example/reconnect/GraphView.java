@@ -40,10 +40,10 @@ public class GraphView extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // Get dropdown from XML
-        Spinner dropdownHistory = findViewById(R.id.history);
-        String[] histories = new String[]{"One Week", "One Month", "One Year"};
-        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
-        dropdownHistory.setAdapter(historyAdapter);
+//        Spinner dropdownHistory = findViewById(R.id.history);
+//        String[] histories = new String[]{"One Week", "One Month", "One Year"};
+//        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, histories);
+//        dropdownHistory.setAdapter(historyAdapter);
     }
 
     @Override

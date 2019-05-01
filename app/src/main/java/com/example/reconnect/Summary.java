@@ -138,13 +138,8 @@ public class Summary extends AppCompatActivity {
 
         int numInteractions = myInteractions.size();
         TextView sumString = (TextView) findViewById(R.id.summary_description);
-        String numContacts = "";
-        if (sumContacts.size() == 1) {
-            numContacts = "1 person";
-        } else {
-            numContacts = Integer.toString(sumContacts.size()) + " people";
-        }
-        sumString.setText("You reconnected " + Integer.toString(numInteractions) + " times with " + numContacts + " over the past " + selectedHistory.toLowerCase() + ":");
+        String numContacts = Integer.toString(sumContacts.size());
+        sumString.setText("You reconnected a total of " + Integer.toString(numInteractions) + " times across " + numContacts + " of your friends over the past " + selectedHistory.toLowerCase() + ":");
 
         String[] from = {"name", "date", "avatars", "mode", "duration"};
         int[] to = {R.id.name, R.id.date, R.id.avatar, R.id.mode, R.id.duration};

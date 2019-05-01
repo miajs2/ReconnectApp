@@ -38,11 +38,12 @@ public class SocialGraph extends View {
     private final Path path;
 //    private final List<Point> points;
 //    private final Point selfPoint;
-    private final Point point1;
-    private final Point point2;
-    private final Point point3;
-    private final Point point4;
-    private final Point point5;
+    private Point alexPoint;
+    private Point selfPoint;
+    private Point danielaPoint;
+    private Point chrisPoint;
+    private Point sarahPoint;
+    private Point noraPoint;
 
     public SocialGraph(Context context) {
         super(context);
@@ -67,11 +68,6 @@ public class SocialGraph extends View {
 //            points.add(new Point(0,0));
 //        }
 //        selfPoint = new Point();
-        point1 = new Point((int)this.getX()/2, (int)this.getY()/2);
-        point2 = new Point(700, 800);
-        point3 = new Point(200, 800);
-        point4 = new Point(100,500);
-        point5 = new Point(400,400);
     }
 
     public SocialGraph(Context context, AttributeSet attrs) {
@@ -79,12 +75,6 @@ public class SocialGraph extends View {
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(5);
         path = new Path();
-
-        point1 = new Point(120, 80);
-        point2 = new Point(550, 600);
-        point3 = new Point(200, 900);
-        point4 = new Point(800,400);
-        point5 = new Point(800,900);
     }
 
     public SocialGraph(Context context, AttributeSet attrs, int defStyle) {
@@ -92,94 +82,129 @@ public class SocialGraph extends View {
         p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setStrokeWidth(5);
         path = new Path();
-
-        point1 = new Point(200, 300);
-        point2 = new Point(700, 800);
-        point3 = new Point(200, 800);
-        point4 = new Point(500,800);
-        point5 = new Point(400,400);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        int xPos = (canvas.getWidth() / 2);
+        int yPos = (canvas.getHeight() / 2);
+        selfPoint = new Point(xPos, yPos);
+        noraPoint = new Point(1100, 1000);
+        alexPoint = new Point(250, 500);
+        sarahPoint = new Point(800,1500);
+        danielaPoint = new Point(200, 1000);
+        chrisPoint = new Point(1200,250);
+
 
         // draw the edge
         path.reset();
-        path.moveTo(point1.x, point1.y);
-        path.lineTo(point2.x, point2.y);
+        path.moveTo(alexPoint.x, alexPoint.y);
+        path.lineTo(selfPoint.x, selfPoint.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
-        p.setStrokeWidth(10);
-        canvas.drawPath(path, p);
-
-        // draw the edge
-        path.reset();
-        path.moveTo(point2.x, point2.y);
-        path.lineTo(point3.x, point3.y);
-        p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
-        p.setStrokeWidth(15);
-        canvas.drawPath(path, p);
-
-        // draw the edge
-        path.reset();
-        path.moveTo(point2.x, point2.y);
-        path.lineTo(point4.x, point4.y);
-        p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
+        p.setColor(Color.LTGRAY);
         p.setStrokeWidth(25);
         canvas.drawPath(path, p);
 
         // draw the edge
         path.reset();
-        path.moveTo(point2.x, point2.y);
-        path.lineTo(point5.x, point5.y);
+        path.moveTo(selfPoint.x, selfPoint.y);
+        path.lineTo(danielaPoint.x, danielaPoint.y);
         p.setStyle(Paint.Style.STROKE);
-        p.setColor(Color.GRAY);
+        p.setColor(Color.LTGRAY);
+        p.setStrokeWidth(15);
+        canvas.drawPath(path, p);
+
+        // draw the edge
+        path.reset();
+        path.moveTo(selfPoint.x, selfPoint.y);
+        path.lineTo(chrisPoint.x, chrisPoint.y);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.LTGRAY);
+        p.setStrokeWidth(10);
+        canvas.drawPath(path, p);
+
+        // draw the edge
+        path.reset();
+        path.moveTo(selfPoint.x, selfPoint.y);
+        path.lineTo(sarahPoint.x, sarahPoint.y);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.LTGRAY);
+        p.setStrokeWidth(45);
+        canvas.drawPath(path, p);
+
+        // draw the edge
+        path.reset();
+        path.moveTo(selfPoint.x, selfPoint.y);
+        path.lineTo(noraPoint.x, noraPoint.y);
+        p.setStyle(Paint.Style.STROKE);
+        p.setColor(Color.LTGRAY);
         p.setStrokeWidth(10);
         canvas.drawPath(path, p);
 
         Bitmap bm =
-                BitmapFactory.decodeResource(getResources(), R.drawable.sarah);
-        Bitmap rect_avatar1 = Bitmap.createScaledBitmap(bm, 200, 200, false);
-        Bitmap avatar1 = getCroppedBitmap(rect_avatar1);
+                BitmapFactory.decodeResource(getResources(), R.drawable.nora);
+        bm = Helper.cropToSquare(bm);
+        Bitmap avatar1 = Bitmap.createScaledBitmap(bm, 200, 200, false);
+        avatar1 = Helper.getCroppedBitmap(avatar1);
 
-        Bitmap bm2 = BitmapFactory.decodeResource(getResources(),R.drawable.mary);
-        Bitmap rect_avatar2 = Bitmap.createScaledBitmap(bm2, 200, 200, false);
-        Bitmap avatar2 = getCroppedBitmap(rect_avatar2);
+        Bitmap bm2 = BitmapFactory.decodeResource(getResources(),R.drawable.alex);
+        bm2 = Helper.cropToSquare(bm2);
+        Bitmap avatar2 = Bitmap.createScaledBitmap(bm2, 200, 200, false);
+        avatar2 = Helper.getCroppedBitmap(avatar2);
 
-        Bitmap bm3 = BitmapFactory.decodeResource(getResources(),R.drawable.alex);
-        Bitmap rect_avatar3 = Bitmap.createScaledBitmap(bm3, 200, 200, false);
-        Bitmap avatar3 = getCroppedBitmap(rect_avatar3);
+        Bitmap bm3 = BitmapFactory.decodeResource(getResources(),R.drawable.sarah);
+        bm3 = Helper.cropToSquare(bm3);
+        Bitmap avatar3 = Bitmap.createScaledBitmap(bm3, 200, 200, false);
+        avatar3 = Helper.getCroppedBitmap(avatar3);
 
-        Bitmap bm4 = BitmapFactory.decodeResource(getResources(),R.drawable.john);
-        Bitmap rect_avatar4 = Bitmap.createScaledBitmap(bm4, 200, 200, false);
-        Bitmap avatar4 = getCroppedBitmap(rect_avatar4);
+        Bitmap bm4 = BitmapFactory.decodeResource(getResources(),R.drawable.daniela);
+        bm4 = Helper.cropToSquare(bm4);
+        Bitmap avatar4 = Bitmap.createScaledBitmap(bm4, 200, 200, false);
+        avatar4 = Helper.getCroppedBitmap(avatar4);
+
+        Bitmap bm5 = BitmapFactory.decodeResource(getResources(),R.drawable.chris);
+        bm5 = Helper.cropToSquare(bm5);
+        Bitmap avatar5 = Bitmap.createScaledBitmap(bm5, 200, 200, false);
+        avatar5 = Helper.getCroppedBitmap(avatar5);
+
+
+        // draw self vertex
+        p.setStyle(Paint.Style.FILL);
+        p.setColor(getResources().getColor(R.color.colorAccent));
+        canvas.drawCircle(selfPoint.x, selfPoint.y, 50, p);
 
         // draw first vertex
         p.setStyle(Paint.Style.FILL);
-        p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawBitmap(avatar1,point1.x-50, point1.y-50, null);
+        p.setColor(getResources().getColor(R.color.medGray));
+        canvas.drawCircle(noraPoint.x, noraPoint.y, 120, p);
+        canvas.drawBitmap(avatar1, noraPoint.x-100, noraPoint.y-100, null);
 
         // draw second vertex
         p.setStyle(Paint.Style.FILL);
-        p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawCircle(point2.x, point2.y, 80, p);
+        p.setColor(getResources().getColor(R.color.medGray));
+        canvas.drawCircle(alexPoint.x, alexPoint.y, 120, p);
+        canvas.drawBitmap(avatar2, alexPoint.x-100, alexPoint.y-100, null);
 
         // draw third vertex
         p.setStyle(Paint.Style.FILL);
-        p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawBitmap(avatar2,point3.x-100, point3.y-50, null);
+        p.setColor(getResources().getColor(R.color.medGray));
+        canvas.drawCircle(sarahPoint.x, sarahPoint.y, 120, p);
+        canvas.drawBitmap(avatar3, sarahPoint.x-100, sarahPoint.y-100, null);
 
-        // draw third vertex
+        // draw fourth vertex
         p.setStyle(Paint.Style.FILL);
-        p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawBitmap(avatar3,point4.x-100, point4.y-80, null);
+        p.setColor(getResources().getColor(R.color.medGray));
+        canvas.drawCircle(danielaPoint.x, danielaPoint.y, 120, p);
+        canvas.drawBitmap(avatar4, danielaPoint.x-100, danielaPoint.y-100, null);
 
-        // draw third vertex
+        // draw fifth vertex
         p.setStyle(Paint.Style.FILL);
-        p.setColor(getResources().getColor(R.color.colorAccent));
-        canvas.drawBitmap(avatar4,point5.x-100, point5.y-80, null);
+        p.setColor(getResources().getColor(R.color.medGray));
+        canvas.drawCircle(chrisPoint.x, chrisPoint.y, 120, p);
+        canvas.drawBitmap(avatar5, chrisPoint.x-100, chrisPoint.y-100, null);
+
+
+
     }
 
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
